@@ -1,0 +1,24 @@
+// EUI global scope
+@import '~@elastic/eui/src/theme_light';
+@import '~@elastic/eui/src/global_styling/functions/index';
+@import '~@elastic/eui/src/global_styling/variables/index';
+@import '~@elastic/eui/src/global_styling/mixins/index';
+
+body {
+  @include euiFont;
+}
+
+.euiPageBody {
+  &.euiPageBody--paddingLarge {
+    padding: $euiSizeL;
+  }
+
+}
+
+.euiPageContent {
+  &.euiPageContent--restrictWidth {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
