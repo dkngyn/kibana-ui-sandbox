@@ -1,7 +1,5 @@
 import React from 'react';
 
 export function App() {
-    return (
-        <main className="container">app</main>
-    )
+  return <main className="container">app</main>;
 }
