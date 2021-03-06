@@ -35,24 +35,27 @@ Mirror `jsonar/kibana` `v7.5.2` dependencies:
 ```
 
 ##### Eslint dependencies:
+Using dependencies listed in `elastic/kibana@v7.11.1` due to incompatibility with `react-scripts` version.
 ```json
 "devDependencies": {
-  "@elastic/eslint-config-kibana": "0.15.0",
-  "@elastic/eslint-plugin-eui": "0.0.2",
-  "@kbn/eslint-plugin-eslint": "1.0.0",
-  "@typescript-eslint/eslint-plugin": "1.13.0",
-  "@typescript-eslint/parser": "1.13.0",
-  "eslint-config-prettier": "6.3.0",
-  "eslint-plugin-babel": "^5.3.0",
-  "eslint-plugin-ban": "1.3.0",
-  "eslint-plugin-import": "2.18.2",
-  "eslint-plugin-jest": "22.17.0",
-  "eslint-plugin-mocha": "6.1.1",
-  "eslint-plugin-prefer-object-spread": "1.2.1",
-  "eslint-plugin-prettier": "3.1.1",
-  "eslint-plugin-react": "7.13.0",
-  "eslint-plugin-react-hooks": "1.6.0",
-  "prettier": "1.18.2"
+    "@elastic/eslint-config-kibana": "0.15.0",
+    "@elastic/eslint-plugin-eui": "0.0.2",
+    "@kbn/eslint-plugin-eslint": "1.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-ban": "^1.4.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jest": "^24.0.2",
+    "eslint-plugin-mocha": "^6.2.2",
+    "eslint-plugin-no-unsanitized": "^3.0.2",
+    "eslint-plugin-prefer-object-spread": "^1.2.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.2.0"
 },
 ```
 
@@ -65,11 +68,11 @@ Mirror `jsonar/kibana` `v7.5.2` dependencies:
 
 ##### Local packages
 ```bash
-"@elastic/eslint-config-kibana": "0.15.0", --> packages/eslint-config-kibana
+"@elastic/eslint-config-kibana": "0.15.0", --> packages/elastic-eslint-config-kibana
 "@kbn/eslint-plugin-eslint": "1.0.0", --> packages/kbn-eslint-plugin-eslint
 ```
 
 *Note*:
 - dependencies are mirrored to exact match, `<name>@<fixed version>` or `<name>@^<version>`.
-- local packages are copied from `v7.5.2`.
+- local packages are copied from `v7.11.1`.
 - current `"typescript": "3.5.3"` is not supported by any older `react-scripts` version, so we're using the future `elastic/kibana` `v7.11.1` `"typescript": "4.1.3"`.
