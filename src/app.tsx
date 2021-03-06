@@ -6,7 +6,7 @@ export function App() {
     <div className="euiPage">
       <div className="euiPageBody euiPageBody--paddingLarge">
         <div className="euiPageContent euiPageContent--restrictWidth">
-          <DayTimePicker/>
+          <DayTimePicker />
         </div>
       </div>
     </div>
