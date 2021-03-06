@@ -1,11 +1,4 @@
 {
   "root": true,
-  "extends": ["@elastic/eslint-config-kibana", "plugin:@elastic/eui/recommended"],
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".ts", ".tsx", ".js", ".jsx"]
-      }
-    }
-  }
+  "extends": ["@elastic/eslint-config-kibana", "plugin:@elastic/eui/recommended"]
 }
