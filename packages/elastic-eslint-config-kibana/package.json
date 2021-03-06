@@ -1,0 +1,14 @@
+{
+  "name": "@elastic/eslint-config-kibana",
+  "version": "0.15.0",
+  "description": "The eslint config used by the kibana team",
+  "main": ".eslintrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elastic/kibana.git"
+  },
+  "kibana": {
+    "devOnly": true
+  },
+  "license": "Apache-2.0"
+}
