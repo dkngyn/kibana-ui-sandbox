@@ -6,11 +6,32 @@
   white-space: nowrap;
 }
 
-.daytime-picker__weekday {
-  color: $euiColorDarkShade;
+.daytime-picker__day {
   display: inline-block;
-  line-height: 28px;
-  margin: 0 4px;
   text-align: center;
+  margin: 0 2px;
   text-transform: uppercase;
+}
+
+.daytime-picker__day-name,
+.daytime-picker__day-hour {
+  display: block;
+  width: $euiSizeXL;
+  height: $euiSizeXL;
+  line-height: 32px;
+}
+
+.daytime-picker__day-name {
+  font-size: $euiFontSizeXS;
+  color: $euiColorMediumShade;
+}
+
+.daytime-picker__day-hour {
+  color: $euiColorDarkShade;
+  &.midday--am {
+    //background-color: $euiColorLightestShade;
+  }
+  &.midday--pm {
+    //background-color: $euiColorLightShade;
+  }
 }

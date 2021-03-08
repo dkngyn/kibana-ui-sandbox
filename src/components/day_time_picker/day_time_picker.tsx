@@ -3,6 +3,7 @@ import moment from 'moment';
 // @ts-ignore
 import { EuiDatePicker, EuiFormRow } from '@elastic/eui';
 import { dayOfWeekCodes } from './consts';
+import { WeekDay } from './weekday';
 
 export class DayTimePicker extends PureComponent {
   public render() {
@@ -14,17 +15,13 @@ export class DayTimePicker extends PureComponent {
         <br />
         <hr />
         <br />
-        <div className="daytime-picker">{this.renderDaysOfWeek()}</div>
+        <div className="daytime-picker">{this.renderWeekDays()}</div>
       </>
     );
   }
 
-  private renderDaysOfWeek() {
-    const weekDays = Object.values(dayOfWeekCodes).map((weekday, i) => (
-      <div key={i} className="daytime-picker__weekday">
-        {weekday}
-      </div>
-    ));
+  private renderWeekDays() {
+    const weekDays = Object.values(dayOfWeekCodes).map((day, i) => <WeekDay key={i} day={day} />);
     return <div className="daytime-picker__weekdays">{weekDays}</div>;
   }
 }
