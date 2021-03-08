@@ -3,7 +3,8 @@ import moment from 'moment';
 // @ts-ignore
 import { EuiDatePicker, EuiFormRow } from '@elastic/eui';
 import { dayOfWeekCodes } from './consts';
-import { WeekDay, Datum } from './weekday';
+import { WeekDay } from './weekday';
+import { Datum } from './dayhour';
 
 export interface RecurData {
   dayOfWeek: number;

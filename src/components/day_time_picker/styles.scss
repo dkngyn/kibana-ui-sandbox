@@ -28,10 +28,10 @@
 
 .daytime-picker__day-hour {
   color: $euiColorDarkShade;
-  &.midday--am {
+  &.day-hour--am {
     //background-color: $euiColorLightestShade;
   }
-  &.midday--pm {
+  &.day-hour--pm {
     //background-color: $euiColorLightShade;
   }
 }
