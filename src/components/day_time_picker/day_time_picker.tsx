@@ -3,9 +3,22 @@ import moment from 'moment';
 // @ts-ignore
 import { EuiDatePicker, EuiFormRow } from '@elastic/eui';
 import { dayOfWeekCodes } from './consts';
-import { WeekDay } from './weekday';
+import { WeekDay, Datum } from './weekday';
 
-export class DayTimePicker extends PureComponent {
+export interface RecurData {
+  dayOfWeek: number;
+  hourOfDay: number[];
+}
+
+interface Props {
+  onSelect?: (datum: RecurData[]) => void;
+}
+
+export class DayTimePicker extends PureComponent<Props> {
+  constructor(props: Props) {
+    super(props);
+  }
+
   public render() {
     return (
       <>
@@ -20,8 +33,15 @@ export class DayTimePicker extends PureComponent {
     );
   }
 
+  private handleSelect = (datum: Datum) => {
+    // eslint-disable-next-line no-console
+    console.log(datum);
+  };
+
   private renderWeekDays() {
-    const weekDays = Object.values(dayOfWeekCodes).map((day, i) => <WeekDay key={i} day={day} />);
+    const weekDays = Object.values(dayOfWeekCodes).map((day, i) => (
+      <WeekDay key={i} day={day} onSelect={this.handleSelect} />
+    ));
     return <div className="daytime-picker__weekdays">{weekDays}</div>;
   }
 }
