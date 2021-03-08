@@ -1,5 +1,5 @@
 import React from 'react';
-import { hourOfDayCodes } from './consts';
+import { dayOfWeekCodes, hourOfDayCodes } from './consts';
 import { DayHour, Datum } from './dayhour';
 
 interface Props {
@@ -18,7 +18,7 @@ export function WeekDay(props: Props) {
 
   return (
     <div className="daytime-picker__day">
-      <div className="daytime-picker__day-name">{day}</div>
+      <div className="daytime-picker__day-name">{dayOfWeekCodes[parseInt(day, 10)]}</div>
       {hours}
     </div>
   );
