@@ -3,6 +3,7 @@
 @import '~@elastic/eui/src/global_styling/functions/index';
 @import '~@elastic/eui/src/global_styling/variables/index';
 @import '~@elastic/eui/src/global_styling/mixins/index';
+@import './components/day_time_picker/styles';
 
 body {
   @include euiFont;

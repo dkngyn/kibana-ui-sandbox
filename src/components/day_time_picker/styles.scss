@@ -1,3 +1,16 @@
-.day-time-picker {
+.daytime-picker {
   font-size: $euiFontSizeS;
+}
+
+.daytime-picker__weekdays {
+  white-space: nowrap;
+}
+
+.daytime-picker__weekday {
+  color: $euiColorDarkShade;
+  display: inline-block;
+  line-height: 28px;
+  margin: 0 4px;
+  text-align: center;
+  text-transform: uppercase;
 }
