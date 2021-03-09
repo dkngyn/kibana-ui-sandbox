@@ -1,13 +1,22 @@
 import React from 'react';
-import { dayOfWeekCodes, hourOfDayCodes } from './consts';
-import { DayHour, Datum } from './dayhour';
-import { RecurData } from './typings';
+import { DayHour, hourOfDayCodes } from './dayhour';
+import { RecurData, Datum } from './typings';
 
 interface Props {
   day: string;
   onSelect: (datum: Datum) => void;
   recurData?: Readonly<RecurData>;
 }
+
+export const dayOfWeekCodes = {
+  1: 'sun',
+  2: 'mon',
+  3: 'tue',
+  4: 'wed',
+  5: 'thu',
+  6: 'fri',
+  7: 'sat',
+} as Record<string, string>;
 
 export function WeekDay(props: Props) {
   const { day, onSelect, recurData } = props;

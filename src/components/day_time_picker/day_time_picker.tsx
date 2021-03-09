@@ -3,10 +3,8 @@ import moment from 'moment';
 import { upperFirst } from 'lodash';
 // @ts-ignore
 import { EuiDatePicker, EuiFormRow, EuiFieldText, EuiIcon, EuiPopover } from '@elastic/eui';
-import { Datum } from './dayhour';
-import { RecurData } from './typings';
-import { WeekDay } from './weekday';
-import { dayOfWeekCodes } from './consts';
+import { RecurData, Datum } from './typings';
+import { WeekDay, dayOfWeekCodes } from './weekday';
 
 interface Props {
   recurData: RecurData[];
