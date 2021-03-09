@@ -3,17 +3,14 @@ import moment from 'moment';
 import { upperFirst } from 'lodash';
 // @ts-ignore
 import { EuiDatePicker, EuiFormRow, EuiFieldText, EuiIcon, EuiPopover } from '@elastic/eui';
-import { dayOfWeekCodes } from './consts';
-import { WeekDay } from './weekday';
 import { Datum } from './dayhour';
-
-export interface RecurData {
-  dayOfWeek: number;
-  hourOfDay: number[];
-}
+import { RecurData } from './typings';
+import { WeekDay } from './weekday';
+import { dayOfWeekCodes } from './consts';
 
 interface Props {
-  onSelect?: (datum: RecurData[]) => void;
+  recurData: RecurData[];
+  onSelect: (datum: RecurData[]) => void;
 }
 
 interface State {
@@ -29,7 +26,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
     super(props);
     this.state = {
       inputValue: '',
-      recurData: [],
+      recurData: props.recurData != null ? props.recurData : [],
       isPopoverOpen: false,
     };
 
@@ -87,10 +84,8 @@ export class DayTimePicker extends PureComponent<Props, State> {
       }
     }
 
-    this.setState({ recurData }, () => {
-      // eslint-disable-next-line no-console
-      console.log(this.state.recurData);
-    });
+    this.setState({ recurData });
+    this.props.onSelect(recurData);
   };
 
   private toggleIsPopoverOpen = (shouldOpen: boolean) => {

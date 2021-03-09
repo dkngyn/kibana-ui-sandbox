@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { dayOfWeekCodes, hourOfDayCodes } from './consts';
 import { DayHour, Datum } from './dayhour';
-import { RecurData } from './day_time_picker';
+import { RecurData } from './typings';
 
 interface Props {
   day: string;
