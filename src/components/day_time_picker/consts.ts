@@ -6,7 +6,7 @@ export const dayOfWeekCodes = {
   5: 'thu',
   6: 'fri',
   7: 'sat',
-} as Record<number, string>;
+} as Record<string, string>;
 
 export const hourOfDayCodes = {
   0: '12',
@@ -34,4 +34,4 @@ export const hourOfDayCodes = {
   22: '10',
   23: '11',
   24: '12',
-} as Record<number, string>;
+} as Record<string, string>;

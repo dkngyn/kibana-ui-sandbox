@@ -18,7 +18,7 @@ export function WeekDay(props: Props) {
 
   return (
     <div className="daytime-picker__day">
-      <div className="daytime-picker__day-name">{dayOfWeekCodes[parseInt(day, 10)]}</div>
+      <div className="daytime-picker__day-name">{dayOfWeekCodes[day]}</div>
       {hours}
     </div>
   );

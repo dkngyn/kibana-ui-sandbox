@@ -65,7 +65,8 @@ export class DayTimePicker extends PureComponent<Props, State> {
     // eslint-disable-next-line no-console
     console.log(datum);
 
-    const { day, hour } = datum;
+    const day = parseInt(datum.day, 10);
+    const hour = parseInt(datum.hour, 10);
     const hourSet = this.collection.get(day);
     if (hourSet != null) {
       hourSet.add(hour);
@@ -77,7 +78,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
     // @ts-ignore
     for (const [k, v] of this.collection.entries()) {
       const recur = {
-        dayOfWeek: k,
+        dayOfWeek: k as number,
         hourOfDay: Array.from(v) as number[],
       };
       recurData.push(recur);

@@ -9,8 +9,8 @@ interface Props {
 }
 
 export interface Datum {
-  day: number;
-  hour: number;
+  day: string;
+  hour: string;
 }
 
 export function DayHour(props: Props) {
@@ -18,7 +18,7 @@ export function DayHour(props: Props) {
 
   const handleClick = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    props.onClick({ day: parseInt(day, 10), hour: parseInt(hour, 10) });
+    props.onClick({ day, hour });
   };
 
   return (
@@ -27,7 +27,7 @@ export function DayHour(props: Props) {
       onClick={handleClick}
       onKeyPress={() => {}}
     >
-      {hourOfDayCodes[parseInt(hour, 10)]}
+      {hourOfDayCodes[hour]}
     </div>
   );
 }
