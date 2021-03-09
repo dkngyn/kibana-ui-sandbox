@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { upperFirst } from 'lodash';
 // @ts-ignore
-import { EuiDatePicker, EuiFormRow, EuiFieldText, EuiIcon } from '@elastic/eui';
+import { EuiDatePicker, EuiFormRow, EuiFieldText, EuiIcon, EuiPopover } from '@elastic/eui';
 import { dayOfWeekCodes } from './consts';
 import { WeekDay } from './weekday';
 import { Datum } from './dayhour';
@@ -19,6 +19,7 @@ interface Props {
 interface State {
   inputValue: string;
   recurData: RecurData[];
+  isPopoverOpen: boolean;
 }
 
 export class DayTimePicker extends PureComponent<Props, State> {
@@ -29,6 +30,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
     this.state = {
       inputValue: '',
       recurData: [],
+      isPopoverOpen: false,
     };
 
     this.collection = new Map<number, Set<number>>();
@@ -53,10 +55,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
         <br />
         <hr />
         <br />
-        <div className="daytime-picker">
-          {this.renderInput()}
-          {this.renderWeekDays()}
-        </div>
+        <div className="daytime-picker">{this.renderWeekDays()}</div>
       </>
     );
   }
@@ -90,17 +89,32 @@ export class DayTimePicker extends PureComponent<Props, State> {
     });
   };
 
-  private renderInput() {
-    const { inputValue } = this.state;
-    return (
-      <EuiFieldText prepend={<EuiIcon type="calendar" />} value={inputValue} onChange={() => {}} />
-    );
-  }
+  private toggleIsPopoverOpen = (shouldOpen: boolean) => {
+    this.setState({ isPopoverOpen: shouldOpen });
+  };
 
   private renderWeekDays() {
     const weekDays = Object.keys(dayOfWeekCodes).map((day, i) => (
       <WeekDay key={i} day={day} onSelect={this.handleSelect} />
     ));
-    return <div className="daytime-picker__weekdays">{weekDays}</div>;
+    const input = (
+      <EuiFieldText
+        prepend={<EuiIcon type="calendar" />}
+        value={this.state.inputValue}
+        onChange={() => {}}
+        onFocus={() => this.toggleIsPopoverOpen(true)}
+      />
+    );
+    return (
+      <EuiPopover
+        button={input}
+        isOpen={this.state.isPopoverOpen}
+        closePopover={() => this.toggleIsPopoverOpen(false)}
+        ownFocus
+        anchorPosition="downCenter"
+      >
+        <div className="daytime-picker__weekdays">{weekDays}</div>
+      </EuiPopover>
+    );
   }
 }
