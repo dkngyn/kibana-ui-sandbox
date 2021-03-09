@@ -67,8 +67,10 @@ export class DayTimePicker extends PureComponent<Props, State> {
     const day = parseInt(datum.day, 10);
     const hour = parseInt(datum.hour, 10);
     const hourSet = this.collection.get(day);
+
     if (hourSet != null) {
-      hourSet.add(hour);
+      if (datum.selected) hourSet.add(hour);
+      else hourSet.delete(hour);
     } else {
       this.collection.set(day, new Set<number>().add(hour));
     }
@@ -76,11 +78,13 @@ export class DayTimePicker extends PureComponent<Props, State> {
     const recurData = [];
     // @ts-ignore
     for (const [k, v] of this.collection.entries()) {
-      const recur = {
-        dayOfWeek: k as number,
-        hourOfDay: Array.from(v) as number[],
-      };
-      recurData.push(recur);
+      if (v.size > 0) {
+        const recur = {
+          dayOfWeek: k as number,
+          hourOfDay: Array.from(v) as number[],
+        };
+        recurData.push(recur);
+      }
     }
 
     this.setState({ recurData }, () => {
@@ -95,7 +99,12 @@ export class DayTimePicker extends PureComponent<Props, State> {
 
   private renderWeekDays() {
     const weekDays = Object.keys(dayOfWeekCodes).map((day, i) => (
-      <WeekDay key={i} day={day} onSelect={this.handleSelect} />
+      <WeekDay
+        key={i}
+        day={day}
+        onSelect={this.handleSelect}
+        recurData={this.state.recurData.find((r) => String(r.dayOfWeek) === day)}
+      />
     ));
     const input = (
       <EuiFieldText

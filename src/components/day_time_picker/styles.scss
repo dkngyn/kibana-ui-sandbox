@@ -19,19 +19,34 @@
   width: $euiSizeXL;
   height: $euiSizeXL;
   line-height: 32px;
+
+  &:hover {
+    background-color: tint($euiColorPrimary, 85%);
+  }
 }
 
 .daytime-picker__day-name {
   font-size: $euiFontSizeXS;
   color: $euiColorMediumShade;
+
+  &.day-name--selected {
+    background-color: tint($euiColorPrimary, 75%);
+  }
 }
 
 .daytime-picker__day-hour {
   color: $euiColorDarkShade;
+  cursor: pointer;
+
   &.day-hour--am {
     //background-color: $euiColorLightestShade;
   }
+
   &.day-hour--pm {
     //background-color: $euiColorLightShade;
+  }
+
+  &.day-hour--selected {
+    background-color: tint($euiColorPrimary, 75%);
   }
 }
