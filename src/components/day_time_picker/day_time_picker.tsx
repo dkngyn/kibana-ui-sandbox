@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
+import { upperFirst } from 'lodash';
 // @ts-ignore
-import { EuiDatePicker, EuiFormRow } from '@elastic/eui';
+import { EuiDatePicker, EuiFormRow, EuiFieldText, EuiIcon } from '@elastic/eui';
 import { dayOfWeekCodes } from './consts';
 import { WeekDay } from './weekday';
 import { Datum } from './dayhour';
@@ -16,6 +17,7 @@ interface Props {
 }
 
 interface State {
+  inputValue: string;
   recurData: RecurData[];
 }
 
@@ -25,10 +27,21 @@ export class DayTimePicker extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      inputValue: '',
       recurData: [],
     };
 
     this.collection = new Map<number, Set<number>>();
+  }
+
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
+    if (prevState.recurData.length !== this.state.recurData.length) {
+      const days = this.state.recurData
+        .map((d) => d.dayOfWeek)
+        .sort()
+        .map((d) => upperFirst(dayOfWeekCodes[d]));
+      this.setState({ inputValue: days.join(', ') });
+    }
   }
 
   public render() {
@@ -40,7 +53,10 @@ export class DayTimePicker extends PureComponent<Props, State> {
         <br />
         <hr />
         <br />
-        <div className="daytime-picker">{this.renderWeekDays()}</div>
+        <div className="daytime-picker">
+          {this.renderInput()}
+          {this.renderWeekDays()}
+        </div>
       </>
     );
   }
@@ -72,6 +88,13 @@ export class DayTimePicker extends PureComponent<Props, State> {
       console.log(this.state.recurData);
     });
   };
+
+  private renderInput() {
+    const { inputValue } = this.state;
+    return (
+      <EuiFieldText prepend={<EuiIcon type="calendar" />} value={inputValue} onChange={() => {}} />
+    );
+  }
 
   private renderWeekDays() {
     const weekDays = Object.keys(dayOfWeekCodes).map((day, i) => (
