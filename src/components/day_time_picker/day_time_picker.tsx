@@ -1,8 +1,17 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
 import moment from 'moment';
 import { upperFirst } from 'lodash';
-// @ts-ignore
-import { EuiDatePicker, EuiFormRow, EuiFieldText, EuiIcon, EuiPopover } from '@elastic/eui';
+import {
+  // @ts-ignore
+  EuiDatePicker,
+  // @ts-ignore
+  EuiFormRow,
+  EuiFormControlLayout,
+  // @ts-ignore
+  EuiFieldText,
+  EuiIcon,
+  EuiPopover,
+} from '@elastic/eui';
 import { RecurData, Datum } from './typings';
 import { WeekDay, dayOfWeekCodes } from './weekday';
 
@@ -90,7 +99,13 @@ export class DayTimePicker extends PureComponent<Props, State> {
     this.setState({ isPopoverOpen: shouldOpen });
   };
 
+  private onClearInput = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    this.setState({ recurData: [] });
+  };
+
   private renderWeekDays() {
+    const clear = this.state.recurData.length > 0 ? { onClick: this.onClearInput } : {};
     const weekDays = Object.keys(dayOfWeekCodes).map((day, i) => (
       <WeekDay
         key={i}
@@ -100,12 +115,19 @@ export class DayTimePicker extends PureComponent<Props, State> {
       />
     ));
     const input = (
-      <EuiFieldText
-        prepend={<EuiIcon type="calendar" />}
-        value={this.state.inputValue}
-        onChange={() => {}}
-        onFocus={() => this.toggleIsPopoverOpen(true)}
-      />
+      <EuiFormControlLayout clear={{ onClick: this.onClearInput }}>
+        <input
+          className="euiFieldText euiFieldText--withIcon "
+          value={this.state.inputValue}
+          onChange={() => {}}
+          onFocus={() => this.toggleIsPopoverOpen(true)}
+        />
+        <div className="euiFormControlLayoutIcons">
+          <span className="euiFormControlLayoutCustomIcon">
+            <EuiIcon type="calendar" />
+          </span>
+        </div>
+      </EuiFormControlLayout>
     );
     return (
       <EuiPopover
