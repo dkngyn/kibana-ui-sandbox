@@ -1,4 +1,9 @@
+/*
+ * See SONAR_EULA file in the project root for full license information.
+ */
+
 import React from 'react';
+import classNames from 'classnames';
 import { DayHour, hourOfDayCodes } from './day_hour';
 import { RecurDoc, Datum } from './typings';
 
@@ -24,8 +29,9 @@ export function WeekDay(props: Props) {
   const isSelected = recurDoc != null;
 
   const hours = Object.keys(hourOfDayCodes).map((hour, i) => {
-    const midday = i < 12 ? 'day-hour--am' : 'day-hour--pm';
-    const selected = recurDoc != null && recurDoc.hourOfDay.includes(parseInt(hour, 10));
+    const hourInt = parseInt(hour, 10);
+    const midday = hourInt < 12 ? 'day-hour--am' : 'day-hour--pm';
+    const selected = recurDoc != null && recurDoc.hourOfDay.includes(hourInt);
 
     return (
       <DayHour
@@ -39,12 +45,11 @@ export function WeekDay(props: Props) {
     );
   });
 
-  const classes = ['daytime-picker__day-name'];
-  if (isSelected) classes.push('day-name--selected');
+  const className = classNames('daytime-picker__day-name', { 'day-name--selected': isSelected });
 
   return (
     <div className="daytime-picker__day">
-      <div className={classes.join(' ')}>{dayOfWeekCodes[day]}</div>
+      <div className={className}>{dayOfWeekCodes[day]}</div>
       {hours}
     </div>
   );

@@ -1,4 +1,9 @@
+/*
+ * See SONAR_EULA file in the project root for full license information.
+ */
+
 import React, { MouseEvent, useState } from 'react';
+import classNames from 'classnames';
 import { Datum } from './typings';
 
 interface Props {
@@ -34,7 +39,6 @@ export const hourOfDayCodes = {
   21: '9',
   22: '10',
   23: '11',
-  24: '12',
 } as Record<string, string>;
 
 export function DayHour(props: Props) {
@@ -48,11 +52,12 @@ export function DayHour(props: Props) {
     onClick({ day, hour, selected: !isSelected });
   };
 
-  const classes = ['daytime-picker__day-hour', midday];
-  if (isSelected) classes.push('day-hour--selected');
+  const className = classNames('daytime-picker__day-hour', midday, {
+    'day-hour--selected': selected,
+  });
 
   return (
-    <div className={classes.join(' ')} onClick={handleClick} onKeyPress={() => {}}>
+    <div className={className} onClick={handleClick} onKeyPress={() => {}}>
       {hourOfDayCodes[hour]}
     </div>
   );

@@ -1,24 +1,39 @@
+$euiColorVis1: #6092C0;
+$euiColorVis1_behindText: #79AAD9;
+$dayTimePickerPmBackground: tint($euiColorLightShade, 25%);
+
 .daytime-picker {
   font-size: $euiFontSizeS;
 
-  .react-datepicker-popper {
+  .daytime-picker__wrapper {
+  }
+
+  .daytime-picker__popper {
     z-index: 1;
     animation: euiAnimFadeIn $euiAnimSpeedFast ease-in;
     border: $euiBorderThin;
     background-color: $euiColorEmptyShade;
     border-radius: 0 0 $euiBorderRadius $euiBorderRadius;
   }
+
+  .daytime-picker__input {
+    position: relative;
+  }
 }
 
 .daytime-picker__week {
   white-space: nowrap;
+  background-image: linear-gradient(to bottom, $euiColorEmptyShade 0%, $euiColorEmptyShade 52%, $euiColorEmptyShade 52%, $dayTimePickerPmBackground 52%, $dayTimePickerPmBackground 100%);
 }
 
 .daytime-picker__day {
   display: inline-block;
   text-align: center;
-  margin: 0 2px;
   text-transform: uppercase;
+
+  + .daytime-picker__day {
+    margin-left: 2px;
+  }
 }
 
 .daytime-picker__day-name,
@@ -27,10 +42,6 @@
   width: $euiSizeXL;
   height: $euiSizeXL;
   line-height: 32px;
-
-  &:hover {
-    background-color: tint($euiColorPrimary, 85%);
-  }
 }
 
 .daytime-picker__day-name {
@@ -38,7 +49,7 @@
   color: $euiColorMediumShade;
 
   &.day-name--selected {
-    background-color: tint($euiColorPrimary, 75%);
+    color: $euiColorPrimary;
   }
 }
 
@@ -46,15 +57,18 @@
   color: $euiColorDarkShade;
   cursor: pointer;
 
+  &:hover {
+    background-color: $euiColorVis1_behindText;
+  }
+
   &.day-hour--am {
-    //background-color: $euiColorLightestShade;
   }
 
   &.day-hour--pm {
-    //background-color: $euiColorLightShade;
   }
 
   &.day-hour--selected {
-    background-color: tint($euiColorPrimary, 75%);
+    color: $euiTextColor;
+    background-color: tint($euiColorPrimary, 50%);
   }
 }

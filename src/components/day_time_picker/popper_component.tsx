@@ -1,3 +1,7 @@
+/*
+ * See SONAR_EULA file in the project root for full license information.
+ */
+
 import React from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
@@ -23,7 +27,7 @@ export function PopperComponent(props: Props) {
   ) : (
     <Popper modifiers={modifiers} placement="top-start">
       {({ ref, style, placement, arrowProps }) => (
-        <div {...{ ref, style }} className="react-datepicker-popper" data-placement={placement}>
+        <div {...{ ref, style }} className="daytime-picker__popper" data-placement={placement}>
           {React.cloneElement(popperComponent, { arrowProps })}
         </div>
       )}
@@ -34,7 +38,7 @@ export function PopperComponent(props: Props) {
     <Manager>
       <Reference>
         {({ ref }) => (
-          <div ref={ref} className="react-datepicker-wrapper">
+          <div ref={ref} className="daytime-picker__wrapper">
             {targetComponent}
           </div>
         )}

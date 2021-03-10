@@ -1,23 +1,19 @@
+/*
+ * See SONAR_EULA file in the project root for full license information.
+ */
+
 import React, { PureComponent, MouseEvent } from 'react';
-import moment from 'moment';
-import { upperFirst } from 'lodash';
-import {
-  // @ts-ignore
-  EuiDatePicker,
-  // @ts-ignore
-  EuiFormRow,
-  EuiFormControlLayout,
-  EuiIcon,
-  EuiPopover,
-} from '@elastic/eui';
+import { EuiFormControlLayout } from '@elastic/eui';
 import onClickOutside from 'react-onclickoutside';
+import { capitalize } from 'lodash';
+import classNames from 'classnames';
 
 import { RecurDoc, Datum } from './typings';
 import { dayOfWeekCodes } from './week_day';
 import { CalendarWeek } from './calendar_week';
 import { PopperComponent } from './popper_component';
 
-const outsideClickIgnoreClass = 'react-datepicker-ignore-onclickoutside';
+const outsideClickIgnoreClass = 'daytime-picker--ignore-onClickOutside';
 const WrappedCalendarWeek = onClickOutside(CalendarWeek);
 
 interface Props {
@@ -38,7 +34,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
     super(props);
     this.state = {
       inputValue: '',
-      recurData: props.recurData != null ? props.recurData : [],
+      recurData: props.recurData,
       isOpen: false,
     };
 
@@ -50,31 +46,54 @@ export class DayTimePicker extends PureComponent<Props, State> {
       const days = this.state.recurData
         .map((d) => d.dayOfWeek)
         .sort()
-        .map((d) => upperFirst(dayOfWeekCodes[d]));
+        .map((d) => capitalize(dayOfWeekCodes[d]));
       this.setState({ inputValue: days.join(', ') });
     }
   }
 
   public render() {
+    const target = <div className="daytime-picker__input">{this.renderInput()}</div>;
+
     return (
-      <>
-        <EuiFormRow label="Select a date">
-          <EuiDatePicker selected={moment()} onChange={() => {}} />
-        </EuiFormRow>
-        <br />
-        <div className="daytime-picker">
-          <EuiFormControlLayout icon="calendar" clear={{ onClick: this.onClearInput }}>
-            {this.renderWeekDays()}
-          </EuiFormControlLayout>
-        </div>
-      </>
+      <div className="daytime-picker">
+        <EuiFormControlLayout icon="calendar" clear={{ onClick: this.onClearInput }}>
+          <PopperComponent
+            hidePopper={!this.state.isOpen}
+            popperComponent={this.renderCalendarWeek()}
+            targetComponent={target}
+          />
+        </EuiFormControlLayout>
+      </div>
+    );
+  }
+
+  private renderInput() {
+    const className = classNames('euiFieldText', 'euiFieldText--withIcon', {
+      [outsideClickIgnoreClass]: this.state.isOpen,
+    });
+
+    return (
+      <input
+        className={className}
+        value={this.state.inputValue}
+        onChange={() => {}}
+        onFocus={() => this.onTogglePopover(true)}
+      />
+    );
+  }
+
+  private renderCalendarWeek() {
+    return (
+      <WrappedCalendarWeek
+        onSelect={this.handleSelect}
+        recurData={this.state.recurData}
+        onClickOutside={this.handleCalendarClickOutside}
+        outsideClickIgnoreClass={outsideClickIgnoreClass}
+      />
     );
   }
 
   private handleSelect = (datum: Datum) => {
-    // eslint-disable-next-line no-console
-    console.log(datum);
-
     const day = parseInt(datum.day, 10);
     const hour = parseInt(datum.hour, 10);
     const hourSet = this.collection.get(day);
@@ -102,7 +121,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
     this.props.onSelect(recurData);
   };
 
-  private toggleIsPopoverOpen = (shouldOpen: boolean) => {
+  private onTogglePopover = (shouldOpen: boolean) => {
     this.setState({ isOpen: shouldOpen });
   };
 
@@ -110,38 +129,6 @@ export class DayTimePicker extends PureComponent<Props, State> {
     e.preventDefault();
     this.setState({ recurData: [] });
   };
-
-  private renderWeekDays() {
-    const inputClasses = ['euiFieldText', 'euiFieldText--withIcon'];
-    if (this.state.isOpen) inputClasses.push(outsideClickIgnoreClass);
-
-    const input = (
-      <input
-        className={inputClasses.join(' ')}
-        value={this.state.inputValue}
-        onChange={() => {}}
-        onFocus={() => this.toggleIsPopoverOpen(true)}
-      />
-    );
-
-    const popper = (
-      <WrappedCalendarWeek
-        onSelect={this.handleSelect}
-        recurData={this.state.recurData}
-        onClickOutside={this.handleCalendarClickOutside}
-        outsideClickIgnoreClass={outsideClickIgnoreClass}
-      />
-    );
-    const target = <div className="react-datepicker__input-container">{input}</div>;
-
-    return (
-      <PopperComponent
-        hidePopper={!this.state.isOpen}
-        popperComponent={popper}
-        targetComponent={target}
-      />
-    );
-  }
 
   private handleCalendarClickOutside = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
