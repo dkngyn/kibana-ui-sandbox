@@ -7,14 +7,12 @@ import {
   // @ts-ignore
   EuiFormRow,
   EuiFormControlLayout,
-  // @ts-ignore
-  EuiFieldText,
   EuiIcon,
   EuiPopover,
 } from '@elastic/eui';
 import { RecurDoc, Datum } from './typings';
-import { WeekDay, dayOfWeekCodes } from './weekday';
-import { Week } from './week';
+import { dayOfWeekCodes } from './week_day';
+import { CalendarWeek } from './calendar_week';
 
 interface Props {
   recurData: RecurDoc[];
@@ -106,15 +104,6 @@ export class DayTimePicker extends PureComponent<Props, State> {
   };
 
   private renderWeekDays() {
-    const clear = this.state.recurData.length > 0 ? { onClick: this.onClearInput } : {};
-    const weekDays = Object.keys(dayOfWeekCodes).map((day, i) => (
-      <WeekDay
-        key={i}
-        day={day}
-        onSelect={this.handleSelect}
-        recurDoc={this.state.recurData.find((r) => String(r.dayOfWeek) === day)}
-      />
-    ));
     const input = (
       <EuiFormControlLayout clear={{ onClick: this.onClearInput }}>
         <input
@@ -139,7 +128,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
         ownFocus
         anchorPosition="downCenter"
       >
-        <div className="daytime-picker__weekdays">{weekDays}</div>
+        <CalendarWeek onSelect={this.handleSelect} recurData={this.state.recurData} />
       </EuiPopover>
     );
   }

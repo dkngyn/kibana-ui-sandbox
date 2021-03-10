@@ -1,5 +1,5 @@
 import React from 'react';
-import { DayHour, hourOfDayCodes } from './dayhour';
+import { DayHour, hourOfDayCodes } from './day_hour';
 import { RecurDoc, Datum } from './typings';
 
 interface Props {
