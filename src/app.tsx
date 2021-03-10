@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { DayTimePicker, RecurData } from './components/day_time_picker';
+import { DayTimePicker, RecurDoc } from './components/day_time_picker';
 
 export function App() {
-  const [recurData, setRecurData] = useState([] as RecurData[]);
+  const [recurData, setRecurData] = useState([] as RecurDoc[]);
 
-  const handleSelect = (datum: RecurData[]) => {
+  const handleSelect = (datum: RecurDoc[]) => {
     setRecurData(datum);
     // eslint-disable-next-line no-console
     console.log(datum);

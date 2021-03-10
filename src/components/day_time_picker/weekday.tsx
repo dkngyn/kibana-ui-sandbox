@@ -1,11 +1,11 @@
 import React from 'react';
 import { DayHour, hourOfDayCodes } from './dayhour';
-import { RecurData, Datum } from './typings';
+import { RecurDoc, Datum } from './typings';
 
 interface Props {
   day: string;
   onSelect: (datum: Datum) => void;
-  recurData?: Readonly<RecurData>;
+  recurDoc?: Readonly<RecurDoc>;
 }
 
 export const dayOfWeekCodes = {
@@ -19,13 +19,13 @@ export const dayOfWeekCodes = {
 } as Record<string, string>;
 
 export function WeekDay(props: Props) {
-  const { day, onSelect, recurData } = props;
+  const { day, onSelect, recurDoc } = props;
 
-  const isSelected = recurData != null;
+  const isSelected = recurDoc != null;
 
   const hours = Object.keys(hourOfDayCodes).map((hour, i) => {
     const midday = i < 12 ? 'day-hour--am' : 'day-hour--pm';
-    const selected = recurData != null && recurData.hourOfDay.includes(parseInt(hour, 10));
+    const selected = recurDoc != null && recurDoc.hourOfDay.includes(parseInt(hour, 10));
 
     return (
       <DayHour

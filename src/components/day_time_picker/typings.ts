@@ -1,4 +1,4 @@
-export interface RecurData {
+export interface RecurDoc {
   dayOfWeek: number;
   hourOfDay: number[];
 }

@@ -12,17 +12,18 @@ import {
   EuiIcon,
   EuiPopover,
 } from '@elastic/eui';
-import { RecurData, Datum } from './typings';
+import { RecurDoc, Datum } from './typings';
 import { WeekDay, dayOfWeekCodes } from './weekday';
+import { Week } from './week';
 
 interface Props {
-  recurData: RecurData[];
-  onSelect: (datum: RecurData[]) => void;
+  recurData: RecurDoc[];
+  onSelect: (datum: RecurDoc[]) => void;
 }
 
 interface State {
   inputValue: string;
-  recurData: RecurData[];
+  recurData: RecurDoc[];
   isPopoverOpen: boolean;
 }
 
@@ -111,7 +112,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
         key={i}
         day={day}
         onSelect={this.handleSelect}
-        recurData={this.state.recurData.find((r) => String(r.dayOfWeek) === day)}
+        recurDoc={this.state.recurData.find((r) => String(r.dayOfWeek) === day)}
       />
     ));
     const input = (
@@ -129,6 +130,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
         </div>
       </EuiFormControlLayout>
     );
+
     return (
       <EuiPopover
         button={input}
