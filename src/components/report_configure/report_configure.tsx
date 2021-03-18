@@ -1,7 +1,25 @@
-import React from 'react';
-import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import React, { useState } from 'react';
+import {
+  EuiButton,
+  EuiButtonEmpty,
+  EuiFlexGroup,
+  EuiFlexItem,
+  // @ts-ignore
+  EuiFlyout,
+} from '@elastic/eui';
+import { ReportSettings } from './report_settings';
 
 export function ReportConfigure() {
+  const [isSettingFlyoutVisible, setSettingFlyoutVisible] = useState(false);
+
+  const settingsFlyout = isSettingFlyoutVisible ? (
+    <EuiFlyout onClose={() => setSettingFlyoutVisible(false)}>
+      <ReportSettings />
+    </EuiFlyout>
+  ) : (
+    <></>
+  );
+
   return (
     <div className="reportConfigure__container">
       <EuiFlexGroup justifyContent="spaceBetween">
@@ -35,23 +53,14 @@ export function ReportConfigure() {
               </EuiButton>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton fill={true} size="s">
+              <EuiButton fill={true} size="s" onClick={() => setSettingFlyoutVisible(true)}>
                 Save
               </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiFlexItem>
       </EuiFlexGroup>
-      <EuiFlexGroup>
-        <EuiFlexItem grow={false}>
-          <EuiFlexGroup alignItems="center" gutterSize="s" justifyContent="flexStart">
-            <EuiFlexItem grow={false}>Report name</EuiFlexItem>
-            <EuiFlexItem>
-              <EuiButtonIcon aria-label="edit" iconType="pencil" />
-            </EuiFlexItem>
-          </EuiFlexGroup>
-        </EuiFlexItem>
-      </EuiFlexGroup>
+      {settingsFlyout}
     </div>
   );
 }
