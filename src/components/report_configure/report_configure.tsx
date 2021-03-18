@@ -14,7 +14,7 @@ export function ReportConfigure() {
 
   const settingsFlyout = isSettingFlyoutVisible ? (
     <EuiFlyout onClose={() => setSettingFlyoutVisible(false)}>
-      <ReportSettings />
+      <ReportSettings onSave={() => {}} onCancel={() => setSettingFlyoutVisible(false)} />
     </EuiFlyout>
   ) : (
     <></>
