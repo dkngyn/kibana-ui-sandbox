@@ -1,5 +1,5 @@
-$euiColorVis1: #6092C0;
 $euiColorVis1_behindText: #79AAD9;
+$euiColorVis4_behindText: #E4A6C7;
 $dayTimePickerPmBackground: tint($euiColorLightShade, 25%);
 
 .daytime-picker {
@@ -47,6 +47,11 @@ $dayTimePickerPmBackground: tint($euiColorLightShade, 25%);
 .daytime-picker__day-name {
   font-size: $euiFontSizeXS;
   color: $euiColorMediumShade;
+  cursor: pointer;
+  &:hover {
+    color: $euiColorDarkShade;
+    background-color: $euiColorVis4_behindText;
+  }
 
   &.day-name--selected {
     color: $euiColorPrimary;
@@ -58,6 +63,7 @@ $dayTimePickerPmBackground: tint($euiColorLightShade, 25%);
   cursor: pointer;
 
   &:hover {
+    color: $euiColorDarkShade;
     background-color: $euiColorVis1_behindText;
   }
 
