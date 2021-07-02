@@ -10,6 +10,7 @@ import classNames from 'classnames';
 
 import { RecurDoc, Datum } from './typings';
 import { dayOfWeekCodes } from './week_day';
+import { hourOfDayList } from './day_hour';
 import { CalendarWeek } from './calendar_week';
 import { PopperComponent } from './popper_component';
 
@@ -89,6 +90,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
     return (
       <WrappedCalendarWeek
         onSelect={this.handleSelect}
+        onSelectAll={this.handleSelectAll}
         recurData={this.state.recurData}
         onClickOutside={this.handleCalendarClickOutside}
         outsideClickIgnoreClass={outsideClickIgnoreClass}
@@ -108,6 +110,26 @@ export class DayTimePicker extends PureComponent<Props, State> {
       this.collection.set(day, new Set<number>().add(hour));
     }
 
+    this.handleAfterSelect();
+  };
+
+  private handleSelectAll = (dayStr: string) => {
+    const day = parseInt(dayStr, 10);
+    const hourSet = this.collection.get(day);
+
+    if (hourSet != null) {
+      hourOfDayList.forEach((h) => hourSet.add(h));
+    } else {
+      this.collection.set(
+        day,
+        new Set<number>([...hourOfDayList])
+      );
+    }
+
+    this.handleAfterSelect();
+  };
+
+  private handleAfterSelect = () => {
     const recurData = [];
     // @ts-ignore
     for (const [k, v] of this.collection.entries()) {
