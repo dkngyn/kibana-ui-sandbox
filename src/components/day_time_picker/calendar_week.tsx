@@ -9,7 +9,7 @@ import { Datum, RecurDoc } from './typings';
 interface Props {
   recurData: Readonly<RecurDoc[]>;
   onSelect: (d: Datum) => void;
-  onSelectAll: (wk: string) => void;
+  onSelectAll: (wk: string, s: boolean) => void;
   onClickOutside: (e: MouseEvent<HTMLElement>) => void;
 }
 

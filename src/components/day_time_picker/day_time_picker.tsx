@@ -113,9 +113,11 @@ export class DayTimePicker extends PureComponent<Props, State> {
     this.handleAfterSelect();
   };
 
-  private handleSelectAll = (dayStr: string) => {
+  private handleSelectAll = (dayStr: string, selected: boolean) => {
     const day = parseInt(dayStr, 10);
     const hourSet = this.collection.get(day);
+
+    if (!selected) this.collection.delete(day);
 
     if (hourSet != null) {
       hourOfDayList.forEach((h) => hourSet.add(h));
