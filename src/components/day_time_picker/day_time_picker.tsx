@@ -2,7 +2,7 @@
  * See SONAR_EULA file in the project root for full license information.
  */
 
-import React, { PureComponent, MouseEvent } from 'react';
+import React, { createRef, PureComponent, MouseEvent, RefObject } from 'react';
 import { EuiFormControlLayout } from '@elastic/eui';
 import onClickOutside from 'react-onclickoutside';
 import { capitalize } from 'lodash';
@@ -29,6 +29,7 @@ interface State {
 
 export class DayTimePicker extends PureComponent<Props, State> {
   private readonly collection: Map<number, Set<number>>;
+  private readonly inputRef: RefObject<HTMLInputElement>;
 
   constructor(props: Props) {
     super(props);
@@ -39,6 +40,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
     };
 
     this.collection = new Map<number, Set<number>>();
+    this.inputRef = createRef();
   }
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
@@ -78,6 +80,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
         value={this.state.inputValue}
         onChange={() => {}}
         onFocus={() => this.onTogglePopover(true)}
+        ref={this.inputRef}
       />
     );
   }
@@ -132,6 +135,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
 
   private handleCalendarClickOutside = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
+    if (this.inputRef.current != null) this.inputRef.current.blur();
     this.setState({ isOpen: false });
   };
 }
