@@ -41,6 +41,8 @@ export const hourOfDayCodes = {
   23: '11',
 } as Record<string, string>;
 
+export const hourOfDayList = Array.from(Array(24), (_, i) => i);
+
 export function DayHour(props: Props) {
   const { day, hour, midday, selected, onClick } = props;
 

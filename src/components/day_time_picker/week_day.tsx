@@ -2,7 +2,7 @@
  * See SONAR_EULA file in the project root for full license information.
  */
 
-import React from 'react';
+import React, { MouseEvent, useState } from 'react';
 import classNames from 'classnames';
 import { DayHour, hourOfDayCodes } from './day_hour';
 import { RecurDoc, Datum } from './typings';
@@ -10,6 +10,7 @@ import { RecurDoc, Datum } from './typings';
 interface Props {
   day: string;
   onSelect: (datum: Datum) => void;
+  onSelectAll: (day: string, selected: boolean) => void;
   recurDoc?: Readonly<RecurDoc>;
 }
 
@@ -24,9 +25,9 @@ export const dayOfWeekCodes = {
 } as Record<string, string>;
 
 export function WeekDay(props: Props) {
-  const { day, onSelect, recurDoc } = props;
+  const { day, onSelect, onSelectAll, recurDoc } = props;
 
-  const isSelected = recurDoc != null;
+  const [isSelected, setSelected] = useState(false);
 
   const hours = Object.keys(hourOfDayCodes).map((hour, i) => {
     const hourInt = parseInt(hour, 10);
@@ -45,11 +46,21 @@ export function WeekDay(props: Props) {
     );
   });
 
-  const className = classNames('daytime-picker__day-name', { 'day-name--selected': isSelected });
+  const onClick = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setSelected(!isSelected);
+    onSelectAll(day, !isSelected);
+  };
+
+  const className = classNames('daytime-picker__day-name', {
+    'day-name--selected': recurDoc != null,
+  });
 
   return (
     <div className="daytime-picker__day">
-      <div className={className}>{dayOfWeekCodes[day]}</div>
+      <div className={className} onClick={onClick} onKeyPress={() => {}}>
+        {dayOfWeekCodes[day]}
+      </div>
       {hours}
     </div>
   );
