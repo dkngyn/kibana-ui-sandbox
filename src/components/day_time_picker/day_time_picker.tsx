@@ -104,7 +104,7 @@ export class DayTimePicker extends PureComponent<Props, State> {
     const hourSet = this.collection.get(day);
 
     if (hourSet != null) {
-      if (datum.selected) hourSet.add(hour);
+      if (datum.selected && !hourSet.has(hour)) hourSet.add(hour);
       else hourSet.delete(hour);
     } else {
       this.collection.set(day, new Set<number>().add(hour));
