@@ -1,0 +1,19 @@
+.comboFilter__input {
+  max-width: 100%;
+
+  input[aria-hidden='true'] {
+    // sass-lint:disable-block no-important
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+}
+
+.comboFilter__placeholder {
+  position: absolute;
+  pointer-events: none;
+  padding: 0 $euiSizeXS;
+  line-height: $euiSizeXL;
+  color: $euiColorMediumShade;
+  margin-bottom: 0 !important; // sass-lint:disable-line no-important
+}
