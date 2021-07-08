@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FocusEventHandler, FocusEvent } from 'react';
 // @ts-ignore
 import { EuiFormControlLayout, EuiFormControlLayoutIconProps, CommonProps } from '@elastic/eui';
 
@@ -8,10 +8,15 @@ interface Props extends CommonProps {
   fullWidth?: boolean;
   isLoading?: boolean;
   placeholder?: string;
+  onFocus: (e: FocusEvent<HTMLInputElement>) => void;
 }
 
 export function ComboFilterInput(props: Props) {
   const { isLoading, compressed, fullWidth, placeholder } = props;
+
+  const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
+    props.onFocus(event);
+  };
 
   const icon: EuiFormControlLayoutIconProps['icon'] = { side: 'right', type: 'arrowDown' };
 
@@ -28,7 +33,7 @@ export function ComboFilterInput(props: Props) {
       <div className="comboFilter__inputWrap">
         {placeholderMessage}
         <div className="comboFilter__input">
-          <input className="" />
+          <input className="" onFocus={handleFocus} />
         </div>
       </div>
     </EuiFormControlLayout>

@@ -1,5 +1,9 @@
 .comboFilter__input {
-  max-width: 100%;
+  width: 100%;
+
+  input {
+    width: 100%;
+  }
 
   input[aria-hidden='true'] {
     // sass-lint:disable-block no-important

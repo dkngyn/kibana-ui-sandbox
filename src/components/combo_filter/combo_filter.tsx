@@ -1,5 +1,7 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { FocusEvent, useState } from 'react';
+import { EuiPortal } from '@elastic/eui';
 import { ComboFilterInput } from './combo_filter_input';
+import { ComboFilterPanel } from './combo_filter_panel';
 
 interface Props {
   id?: string;
@@ -12,11 +14,21 @@ interface Props {
 export function ComboFilter(props: Props) {
   const { compressed, id, placeholder, fullWidth, isLoading } = props;
 
-  const [value, setValue] = useState('');
+  const [isPanelOpen, setPanelOpen] = useState<boolean>(false);
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+  const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
+    // eslint-disable-next-line no-console
+    console.log(event);
+    setPanelOpen(true);
   };
+
+  const panel = isPanelOpen ? (
+    <EuiPortal>
+      <ComboFilterPanel />
+    </EuiPortal>
+  ) : (
+    <></>
+  );
 
   return (
     <div className="comboFilter">
@@ -26,7 +38,9 @@ export function ComboFilter(props: Props) {
         fullWidth={fullWidth}
         isLoading={isLoading}
         placeholder={placeholder}
+        onFocus={handleFocus}
       />
+      {panel}
     </div>
   );
 }
