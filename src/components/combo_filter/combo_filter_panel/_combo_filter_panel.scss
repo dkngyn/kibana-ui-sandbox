@@ -1,0 +1,15 @@
+.comboFilter__panel {
+  width: 540px;
+  margin: 0 auto;
+}
+
+.comboFilter__panel-body {
+  max-height: 300px;
+  padding: 0;
+}
+
+.comboFilter__panel-footer {
+  padding: $euiSizeM;
+  border-top: $euiBorderThin;
+}
+

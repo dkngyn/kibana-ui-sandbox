@@ -1,0 +1,46 @@
+.comboFilter__content {
+  padding: $euiSize $euiSizeM;
+
+  + .comboFilter__content {
+    border-left: $euiBorderThin;
+  }
+}
+
+.comboFilter__subjects {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+
+  .comboFilter__subjects-list {
+    @include euiYScrollWithShadows;
+    height: 100%;
+    overflow-y: auto;
+    mask-image: none;
+  }
+
+  .euiContextMenuItem {
+    padding: $euiSizeS;
+    font-size: $euiFontSizeS;
+  }
+}
+
+.comboFilter__values {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+
+  .comboFilter__values-title {
+    margin: 0 0 $euiSizeM 0;
+    color: $euiColorDarkShade;
+    font-size: $euiFontSizeXS;
+    font-weight: $euiFontWeightMedium;
+    text-transform: uppercase;
+  }
+
+  .comboFilter__values-list {
+    @include euiYScrollWithShadows;
+    height: 100%;
+    overflow-y: auto;
+    mask-image: none;
+  }
+}
