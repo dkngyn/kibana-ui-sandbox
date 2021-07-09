@@ -16,22 +16,46 @@ export function ComboFilter(props: Props) {
 
   const [isPanelOpen, setPanelOpen] = useState<boolean>(false);
 
+  let refInstance: HTMLDivElement | null = null;
+  const refCallback = (r: HTMLDivElement) => {
+    if (refInstance) refInstance.removeEventListener('focusout', handleBlur);
+
+    refInstance = r;
+    if (refInstance) refInstance.addEventListener('focusout', handleBlur);
+  };
+
+  let panelRefInstance: HTMLDivElement | null = null;
+  const panelRefCallback = (r: HTMLDivElement) => {
+    panelRefInstance = r;
+  };
+
   const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line no-console
-    console.log(event);
     setPanelOpen(true);
+  };
+
+  const handleBlur = (event: unknown) => {
+    const focusEvent = event as FocusEvent & {
+      explicitOriginalTarget: EventTarget;
+    };
+
+    const relatedTarget = (focusEvent.relatedTarget ||
+      focusEvent.explicitOriginalTarget) as Node | null;
+
+    const focusedInInput = relatedTarget && refInstance && refInstance.contains(relatedTarget);
+
+    if (!focusedInInput) setPanelOpen(false);
   };
 
   const panel = isPanelOpen ? (
     <EuiPortal>
-      <ComboFilterPanel />
+      <ComboFilterPanel refCallback={panelRefCallback} />
     </EuiPortal>
   ) : (
     <></>
   );
 
   return (
-    <div className="comboFilter">
+    <div className="comboFilter" ref={refCallback}>
       <ComboFilterInput
         id={id}
         compressed={compressed}

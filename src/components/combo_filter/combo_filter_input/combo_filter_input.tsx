@@ -1,4 +1,4 @@
-import React, { FocusEventHandler, FocusEvent } from 'react';
+import React, { FocusEvent } from 'react';
 // @ts-ignore
 import { EuiFormControlLayout, EuiFormControlLayoutIconProps, CommonProps } from '@elastic/eui';
 
