@@ -1,49 +1,34 @@
-import React, { useState, RefCallback } from 'react';
+import React, { useEffect, useState, RefCallback } from 'react';
 import { EuiPanel, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty } from '@elastic/eui';
 import { PanelContentSubjects } from './panel_content_subjects';
 import { PanelContentValues } from './panel_content_values';
+import { fetchData } from '../fetch_data';
 
 interface Props {
   refCallback: RefCallback<HTMLDivElement>;
 }
 
-const mockContent: Record<string, string[]> = {
-  Roles: [
-    'Sys admin',
-    'Server admin',
-    'Database owner',
-    'Database security admin',
-    'Access admin',
-    'Backup operator',
-    'DDL admin',
-    'Data writer',
-    'Data operator',
-    'Setup admin',
-    'Bulk admin',
-    'Disk admin',
-  ],
-  Permissions: [
-    'ACCESS',
-    'ALL',
-    'READ',
-    'MODIFY',
-    'EXECUTE',
-    'BACKUP',
-    'DDL',
-    'MAINTENANCE',
-    'DELETE',
-  ],
-  Boolean: ['is something', 'is something else', 'is some other thing'],
-  Groups: ['READ', 'MODIFY', 'EXECUTE'],
-  Users: ['DDL', 'DELETE'],
-  'AWS roles': ['EXECUTE', 'BACKUP', 'DDL', 'MAINTENANCE', 'DELETE'],
-  Emails: ['imperva.com', 'jsonar.com'],
-  'Managed by': ['ACCESS', 'ALL', 'READ'],
-};
-
 export function ComboFilterPanel(props: Props) {
-  const [subject, setSubject] = useState<string>(Object.keys(mockContent)[0]);
-  const [values, setValues] = useState<string[]>(mockContent[subject]);
+  const [mockContent, setMockContent] = useState<Record<string, string[]>>({});
+  const [subject, setSubject] = useState<string>('');
+  const [values, setValues] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetchData()
+      .then((resp) => {
+        setMockContent(resp);
+        const s = Object.keys(resp)[0];
+        return { s, v: resp[s] };
+      })
+      .then(({ s, v }) => {
+        setSubject(s);
+        setValues(v);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
+  }, []);
 
   const handleSubjectSelect = (subj: string) => {
     setSubject(subj);
