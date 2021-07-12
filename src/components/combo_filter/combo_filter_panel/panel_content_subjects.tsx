@@ -1,28 +1,31 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 // @ts-ignore
-import { EuiFieldSearch, EuiContextMenuPanel, EuiContextMenuItem, EuiSpacer } from '@elastic/eui';
+import { EuiFieldSearch, EuiContextMenuItem, EuiSpacer } from '@elastic/eui';
 
 interface Props {
+  query: string;
   subjects: string[];
   onSelect: (subj: string) => void;
+  onSearch: (q: string) => void;
 }
 
 export function PanelContentSubjects(props: Props) {
-  const [query, setQuery] = useState('');
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    props.onSearch(e.target.value);
+  };
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value);
-
-  const items = props.subjects.map((subj, i) => (
-    <EuiContextMenuItem hasPanel key={i} onClick={() => props.onSelect(subj)}>
-      {subj}
+  const items = props.subjects.map((s, i) => (
+    <EuiContextMenuItem hasPanel key={`${i}-${s}`} onClick={() => props.onSelect(s)}>
+      {s}
     </EuiContextMenuItem>
   ));
 
   return (
     <div className="comboFilter__subjects">
-      <EuiFieldSearch compressed value={query} onChange={handleSearchChange} />
+      <EuiFieldSearch compressed value={props.query} onChange={handleSearchChange} />
       <EuiSpacer size="s" />
-      <EuiContextMenuPanel className="comboFilter__subjects-list" items={items} />
+      <div className="comboFilter__subjects-list euiContextMenuPanel">{items}</div>
     </div>
   );
 }

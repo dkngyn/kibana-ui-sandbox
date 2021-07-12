@@ -1,5 +1,21 @@
-export async function fetchData(): Promise<Record<string, string[]>> {
-  return Promise.resolve(mockContent);
+import { isEmpty } from 'lodash';
+
+export async function fetchData(query: string): Promise<Record<string, string[]>> {
+  // eslint-disable-next-line no-console
+  console.log(`fetchData(${query})`);
+
+  if (isEmpty(query)) return Promise.resolve(mockContent);
+
+  const results = {};
+  for (const key in mockContent) {
+    if (mockContent.hasOwnProperty(key)) {
+      const hits = mockContent[key].filter((v) => v.toLowerCase().indexOf(query) !== -1);
+      const subject = `${key} (${hits.length})`;
+      Object.assign(results, { [subject]: hits });
+    }
+  }
+
+  return Promise.resolve(results);
 }
 
 const mockContent: Record<string, string[]> = {

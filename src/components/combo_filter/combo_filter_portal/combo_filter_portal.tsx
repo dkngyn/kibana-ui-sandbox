@@ -8,7 +8,7 @@ interface Props {
 
 export function ComboFilterPortal(props: Props) {
   return (
-    <EuiPortal>
+    <EuiPortal key="comboFilter__portal">
       <ComboFilterPanel refCallback={props.refCallback} />
     </EuiPortal>
   );

@@ -2,6 +2,7 @@ import React, { FocusEvent, useState } from 'react';
 import { EuiPortal } from '@elastic/eui';
 import { ComboFilterInput } from './combo_filter_input';
 import { ComboFilterPanel } from './combo_filter_panel';
+import { ComboFilterPortal } from './combo_filter_portal';
 
 interface Props {
   id?: string;
@@ -64,7 +65,7 @@ export function ComboFilter(props: Props) {
         placeholder={placeholder}
         onFocus={handleFocus}
       />
-      {panel}
+      <ComboFilterPortal refCallback={panelRefCallback} />
     </div>
   );
 }
