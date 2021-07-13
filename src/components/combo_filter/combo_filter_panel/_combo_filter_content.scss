@@ -10,6 +10,10 @@
   display: flex;
   overflow: hidden;
   flex-direction: column;
+  margin-top: $euiSizeS;
+
+  .comboFilter__subjects-total {
+  }
 
   .comboFilter__subjects-list {
     @include euiYScrollWithShadows;
@@ -19,8 +23,24 @@
   }
 
   .euiContextMenuItem {
-    padding: $euiSizeS;
+    padding: $euiSizeXS;
     font-size: $euiFontSizeS;
+    font-weight: $euiFontWeightSemiBold;
+  }
+
+  .euiListGroup {
+    padding: 0;
+
+    .euiListGroupItem {
+      margin-top: $euiSizeXS;
+      //&:first-child {
+      //  margin-top: 0;
+      //}
+    }
+
+    .euiListGroupItem__button {
+      padding: $euiSizeXS;
+    }
   }
 }
 

@@ -1,10 +1,19 @@
-import React, { useEffect, useState, RefCallback } from 'react';
-import { EuiPanel, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty } from '@elastic/eui';
+import React, { useEffect, useState, RefCallback, ChangeEvent } from 'react';
+import {
+  EuiPanel,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiButton,
+  EuiButtonEmpty,
+  // @ts-ignore
+  EuiFieldSearch,
+} from '@elastic/eui';
 import { PanelContentSubjects } from './panel_content_subjects';
 import { PanelContentValues } from './panel_content_values';
 import { fetchData } from '../fetch_data';
 
 interface Props {
+  name: string;
   refCallback: RefCallback<HTMLDivElement>;
 }
 
@@ -36,22 +45,23 @@ export function ComboFilterPanel(props: Props) {
     setValues(mockContent[subj]);
   };
 
-  const handleSearch = (needle: string) => {
-    setQuery(needle);
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setQuery(e.target.value);
   };
 
   return (
     <EuiPanel className="comboFilter__panel" paddingSize="none">
       <EuiFlexGroup className="comboFilter__panel-body" gutterSize="none" ref={props.refCallback}>
-        <EuiFlexItem className="comboFilter__content comboFilter__content-subjects">
+        <EuiFlexItem className="comboFilter__content">
+          <EuiFieldSearch compressed value={query} onChange={handleSearch} />
           <PanelContentSubjects
-            query={query}
+            name={props.name}
             subjects={Object.keys(mockContent)}
             onSelect={handleSubjectSelect}
-            onSearch={handleSearch}
           />
         </EuiFlexItem>
-        <EuiFlexItem className="comboFilter__content comboFilter__content-values">
+        <EuiFlexItem className="comboFilter__content">
           <PanelContentValues subject={subject} values={values} />
         </EuiFlexItem>
       </EuiFlexGroup>

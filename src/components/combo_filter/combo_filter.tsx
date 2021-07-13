@@ -6,6 +6,7 @@ import { ComboFilterPortal } from './combo_filter_portal';
 
 interface Props {
   id?: string;
+  name: string;
   compressed?: boolean;
   fullWidth?: boolean;
   isLoading?: boolean;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 export function ComboFilter(props: Props) {
-  const { compressed, id, placeholder, fullWidth, isLoading } = props;
+  const { compressed, id, name, placeholder, fullWidth, isLoading } = props;
 
   const [isPanelOpen, setPanelOpen] = useState<boolean>(false);
 
@@ -49,7 +50,7 @@ export function ComboFilter(props: Props) {
 
   const panel = isPanelOpen ? (
     <EuiPortal>
-      <ComboFilterPanel refCallback={panelRefCallback} />
+      <ComboFilterPanel name={name} refCallback={panelRefCallback} />
     </EuiPortal>
   ) : (
     <></>
@@ -65,7 +66,7 @@ export function ComboFilter(props: Props) {
         placeholder={placeholder}
         onFocus={handleFocus}
       />
-      <ComboFilterPortal refCallback={panelRefCallback} />
+      <ComboFilterPortal name={name} refCallback={panelRefCallback} />
     </div>
   );
 }

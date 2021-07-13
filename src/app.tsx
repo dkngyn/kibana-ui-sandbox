@@ -6,7 +6,7 @@ export function App() {
     <div className="euiPage">
       <div className="euiPageBody euiPageBody--paddingLarge">
         <div className="euiPageContent euiPageContent--restrictWidth">
-          <ComboFilter compressed={false} placeholder="Select filter options" />
+          <ComboFilter compressed={false} name="Users" placeholder="Select filter options" />
         </div>
       </div>
     </div>
