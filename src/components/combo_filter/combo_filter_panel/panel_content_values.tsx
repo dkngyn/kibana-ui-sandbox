@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
-import { EuiCheckboxGroup, EuiSpacer } from '@elastic/eui';
+import { EuiCheckboxGroup } from '@elastic/eui';
+import { get, pickBy } from 'lodash';
 
 interface Props {
   subject: string;
   values: string[];
+  onSelect: (s: string, vs: string[]) => void;
 }
 
 export function PanelContentValues(props: Props) {
   const [checkboxIdMap, setCheckboxIdMap] = useState<Record<string, boolean>>({});
+  const prevSubj = usePrevious(props.subject);
 
   const options = props.values.map((v, i) => ({ id: `${i}-${v}`, label: v }));
+
+  useEffect(() => {
+    if (prevSubj !== props.subject) setCheckboxIdMap({});
+  }, [prevSubj, props.subject]);
 
   const handleCheckboxChange = (optionId: any) => {
     const newCheckboxIdMap = {
@@ -18,6 +25,18 @@ export function PanelContentValues(props: Props) {
       ...{ [optionId]: !checkboxIdMap[optionId] },
     };
     setCheckboxIdMap(newCheckboxIdMap);
+
+    const selectedValues: string[] = Object.keys(
+      pickBy(newCheckboxIdMap, (v, k) => v === true)
+    ).map(
+      (k) =>
+        get(
+          options.find((i) => i.id === k),
+          'label'
+        ) as string
+    );
+
+    props.onSelect(props.subject, selectedValues);
   };
 
   return (
@@ -31,4 +50,12 @@ export function PanelContentValues(props: Props) {
       />
     </div>
   );
+}
+
+function usePrevious(val: string) {
+  const ref = useRef('');
+  useEffect(() => {
+    ref.current = val;
+  }, [val]);
+  return ref.current;
 }
