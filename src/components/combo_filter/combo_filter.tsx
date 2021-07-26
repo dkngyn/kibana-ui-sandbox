@@ -48,9 +48,14 @@ export function ComboFilter(props: Props) {
     if (!focusedInInput) setPanelOpen(false);
   };
 
+  const handleSubmit = (filters: Record<string, string[]>) => {
+    // eslint-disable-next-line no-console
+    console.log(filters);
+  };
+
   const panel = isPanelOpen ? (
     <EuiPortal>
-      <ComboFilterPanel name={name} refCallback={panelRefCallback} />
+      <ComboFilterPanel name={name} refCallback={panelRefCallback} onSubmit={handleSubmit} />
     </EuiPortal>
   ) : (
     <></>
@@ -66,7 +71,7 @@ export function ComboFilter(props: Props) {
         placeholder={placeholder}
         onFocus={handleFocus}
       />
-      <ComboFilterPortal name={name} refCallback={panelRefCallback} />
+      <ComboFilterPortal name={name} refCallback={panelRefCallback} onSubmit={handleSubmit} />
     </div>
   );
 }

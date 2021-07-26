@@ -15,6 +15,7 @@ import { fetchData } from '../fetch_data';
 interface Props {
   name: string;
   refCallback: RefCallback<HTMLDivElement>;
+  onSubmit: (filters: Record<string, string[]>) => void;
 }
 
 export function ComboFilterPanel(props: Props) {
@@ -22,6 +23,7 @@ export function ComboFilterPanel(props: Props) {
   const [query, setQuery] = useState<string>('');
   const [subject, setSubject] = useState<string>('');
   const [values, setValues] = useState<string[]>([]);
+  const [filterCollection, setFilterCollection] = useState<Record<string, string[]>>({});
 
   useEffect(() => {
     fetchData(query)
@@ -45,9 +47,24 @@ export function ComboFilterPanel(props: Props) {
     setValues(mockContent[subj]);
   };
 
+  const handleValueSelect = (subj: string, selectedValues: string[]) => {
+    const newFilters = {
+      ...filterCollection,
+      ...{ [subj]: selectedValues },
+    };
+    setFilterCollection(newFilters);
+
+    // eslint-disable-next-line no-console
+    console.log(newFilters);
+  };
+
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setQuery(e.target.value);
+  };
+
+  const handleClick = () => {
+    props.onSubmit(filterCollection);
   };
 
   return (
@@ -62,7 +79,7 @@ export function ComboFilterPanel(props: Props) {
           />
         </EuiFlexItem>
         <EuiFlexItem className="comboFilter__content">
-          <PanelContentValues subject={subject} values={values} />
+          <PanelContentValues subject={subject} values={values} onSelect={handleValueSelect} />
         </EuiFlexItem>
       </EuiFlexGroup>
       <div className="comboFilter__panel-footer">
@@ -73,7 +90,7 @@ export function ComboFilterPanel(props: Props) {
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton fill size="s">
+            <EuiButton fill size="s" onClick={handleClick}>
               Add filters
             </EuiButton>
           </EuiFlexItem>
