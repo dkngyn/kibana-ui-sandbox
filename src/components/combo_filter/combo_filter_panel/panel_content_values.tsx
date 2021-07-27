@@ -1,23 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
 import { EuiCheckboxGroup } from '@elastic/eui';
-import { get, pickBy } from 'lodash';
+import { get, pickBy, isEmpty } from 'lodash';
 
 interface Props {
   subject: string;
-  values: string[];
+  content: Record<string, string[]>;
   onSelect: (s: string, vs: string[]) => void;
 }
 
-export function PanelContentValues(props: Props) {
+export function PanelContentValues({ subject, content, onSelect }: Props) {
   const [checkboxIdMap, setCheckboxIdMap] = useState<Record<string, boolean>>({});
-  const prevSubj = usePrevious(props.subject);
-
-  const options = props.values.map((v, i) => ({ id: `${i}-${v}`, label: v }));
+  const [options, setOptions] = useState<Array<Record<string, string>>>([]);
+  const prevSubj = usePrevious(subject);
 
   useEffect(() => {
-    if (prevSubj !== props.subject) setCheckboxIdMap({});
-  }, [prevSubj, props.subject]);
+    if (prevSubj !== subject) setCheckboxIdMap({});
+
+    const opts = !isEmpty(subject)
+      ? content[subject].map((v, i) => ({ id: `${i}-${v}`, label: v }))
+      : [{ id: '', label: '' }];
+    setOptions(opts);
+  }, [prevSubj, subject, content]);
 
   const handleCheckboxChange = (optionId: any) => {
     const newCheckboxIdMap = {
@@ -36,12 +40,12 @@ export function PanelContentValues(props: Props) {
         ) as string
     );
 
-    props.onSelect(props.subject, selectedValues);
+    onSelect(subject, selectedValues);
   };
 
   return (
     <div className="comboFilter__values">
-      <p className="comboFilter__values-title">{props.subject}</p>
+      <p className="comboFilter__values-title">{subject}</p>
       <EuiCheckboxGroup
         className="comboFilter__values-list"
         options={options}

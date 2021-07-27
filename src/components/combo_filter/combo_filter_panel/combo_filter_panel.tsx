@@ -22,7 +22,6 @@ export function ComboFilterPanel(props: Props) {
   const [mockContent, setMockContent] = useState<Record<string, string[]>>({});
   const [query, setQuery] = useState<string>('');
   const [subject, setSubject] = useState<string>('');
-  const [values, setValues] = useState<string[]>([]);
   const [filterCollection, setFilterCollection] = useState<Record<string, string[]>>({});
 
   useEffect(() => {
@@ -30,11 +29,7 @@ export function ComboFilterPanel(props: Props) {
       .then((resp) => {
         setMockContent(resp);
         const s = Object.keys(resp)[0];
-        return { s, v: resp[s] };
-      })
-      .then(({ s, v }) => {
         setSubject(s);
-        setValues(v);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -44,7 +39,6 @@ export function ComboFilterPanel(props: Props) {
 
   const handleSubjectSelect = (subj: string) => {
     setSubject(subj);
-    setValues(mockContent[subj]);
   };
 
   const handleValueSelect = (subj: string, selectedValues: string[]) => {
@@ -79,7 +73,11 @@ export function ComboFilterPanel(props: Props) {
           />
         </EuiFlexItem>
         <EuiFlexItem className="comboFilter__content">
-          <PanelContentValues subject={subject} values={values} onSelect={handleValueSelect} />
+          <PanelContentValues
+            subject={subject}
+            content={mockContent}
+            onSelect={handleValueSelect}
+          />
         </EuiFlexItem>
       </EuiFlexGroup>
       <div className="comboFilter__panel-footer">
