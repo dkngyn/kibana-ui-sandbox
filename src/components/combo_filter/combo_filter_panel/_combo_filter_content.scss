@@ -49,6 +49,13 @@
   overflow: hidden;
   flex-direction: column;
 
+  .comboFilter__values-wrap {
+    @include euiYScrollWithShadows;
+    height: 100%;
+    overflow-y: auto;
+    mask-image: none;
+  }
+
   .comboFilter__values-title {
     margin: 0 0 $euiSizeM 0;
     color: $euiColorDarkShade;
@@ -56,12 +63,5 @@
     font-weight: $euiFontWeightMedium;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-  }
-
-  .comboFilter__values-list {
-    @include euiYScrollWithShadows;
-    height: 100%;
-    overflow-y: auto;
-    mask-image: none;
   }
 }

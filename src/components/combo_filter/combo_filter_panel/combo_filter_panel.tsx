@@ -22,7 +22,8 @@ export function ComboFilterPanel(props: Props) {
   const [mockContent, setMockContent] = useState<Record<string, string[]>>({});
   const [query, setQuery] = useState<string>('');
   const [subject, setSubject] = useState<string>('');
-  const [filterCollection, setFilterCollection] = useState<Record<string, string[]>>({});
+  const [collection, setCollection] = useState<Record<string, string[]>>({});
+  const [filterCount, setFilterCount] = useState<number>(0);
 
   useEffect(() => {
     fetchData(query)
@@ -37,19 +38,24 @@ export function ComboFilterPanel(props: Props) {
       });
   }, [query]);
 
+  useEffect(() => {
+    const count = Object.values(collection).reduce((acc: number, cur: string[]) => {
+      acc += cur.length;
+      return acc;
+    }, 0);
+    setFilterCount(count);
+  }, [collection]);
+
   const handleSubjectSelect = (subj: string) => {
     setSubject(subj);
   };
 
   const handleValueSelect = (subj: string, selectedValues: string[]) => {
     const newFilters = {
-      ...filterCollection,
+      ...collection,
       ...{ [subj]: selectedValues },
     };
-    setFilterCollection(newFilters);
-
-    // eslint-disable-next-line no-console
-    console.log(newFilters);
+    setCollection(newFilters);
   };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +64,7 @@ export function ComboFilterPanel(props: Props) {
   };
 
   const handleClick = () => {
-    props.onSubmit(filterCollection);
+    props.onSubmit(collection);
   };
 
   return (
@@ -69,6 +75,7 @@ export function ComboFilterPanel(props: Props) {
           <PanelContentSubjects
             name={props.name}
             subjects={Object.keys(mockContent)}
+            filterCount={filterCount}
             onSelect={handleSubjectSelect}
           />
         </EuiFlexItem>
@@ -76,6 +83,7 @@ export function ComboFilterPanel(props: Props) {
           <PanelContentValues
             subject={subject}
             content={mockContent}
+            collection={collection}
             onSelect={handleValueSelect}
           />
         </EuiFlexItem>

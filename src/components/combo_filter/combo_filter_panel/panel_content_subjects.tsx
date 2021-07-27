@@ -4,23 +4,18 @@ import { EuiBadge, EuiListGroup, EuiListGroupItem } from '@elastic/eui';
 interface Props {
   name: string;
   subjects: string[];
+  filterCount: number;
   onSelect: (subj: string) => void;
 }
 
-export function PanelContentSubjects(props: Props) {
-  const items = props.subjects.map((s, i) => (
-    <EuiListGroupItem
-      wrapText
-      size="s"
-      label={s}
-      key={`${i}-${s}`}
-      onClick={() => props.onSelect(s)}
-    />
+export function PanelContentSubjects({ name, subjects, filterCount, onSelect }: Props) {
+  const items = subjects.map((s, i) => (
+    <EuiListGroupItem wrapText size="s" label={s} key={`${i}-${s}`} onClick={() => onSelect(s)} />
   ));
 
   return (
     <div className="comboFilter__subjects">
-      {renderTotal(props.name, 2)}
+      {renderTotal(name, filterCount, onSelect)}
       <div className="comboFilter__subjects-list">
         <EuiListGroup>{items}</EuiListGroup>
       </div>
@@ -28,7 +23,7 @@ export function PanelContentSubjects(props: Props) {
   );
 }
 
-function renderTotal(name: string, count: number) {
+function renderTotal(name: string, count: number, onSelect: (s: string) => void) {
   const badge = <EuiBadge>{count}</EuiBadge>;
   const label = (
     <strong>
@@ -36,7 +31,9 @@ function renderTotal(name: string, count: number) {
     </strong>
   );
 
-  const handleClick = () => {};
+  const handleClick = () => {
+    onSelect('total');
+  };
 
   return (
     <div className="comboFilter__subjects-total">

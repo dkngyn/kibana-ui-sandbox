@@ -6,10 +6,11 @@ import { get, pickBy, isEmpty } from 'lodash';
 interface Props {
   subject: string;
   content: Record<string, string[]>;
+  collection: Record<string, string[]>;
   onSelect: (s: string, vs: string[]) => void;
 }
 
-export function PanelContentValues({ subject, content, onSelect }: Props) {
+export function PanelContentValues({ subject, content, collection, onSelect }: Props) {
   const [checkboxIdMap, setCheckboxIdMap] = useState<Record<string, boolean>>({});
   const [options, setOptions] = useState<Array<Record<string, string>>>([]);
   const prevSubj = usePrevious(subject);
@@ -17,11 +18,16 @@ export function PanelContentValues({ subject, content, onSelect }: Props) {
   useEffect(() => {
     if (prevSubj !== subject) setCheckboxIdMap({});
 
-    const opts = !isEmpty(subject)
-      ? content[subject].map((v, i) => ({ id: `${i}-${v}`, label: v }))
-      : [{ id: '', label: '' }];
-    setOptions(opts);
-  }, [prevSubj, subject, content]);
+    if (!isEmpty(subject)) {
+      setOptions(content[subject].map((s) => ({ id: s, label: s })));
+
+      if (!isEmpty(collection[subject])) {
+        const newCheckboxIdMap: Record<string, boolean> = {};
+        collection[subject].forEach((s) => (newCheckboxIdMap[s] = true));
+        setCheckboxIdMap(newCheckboxIdMap);
+      }
+    }
+  }, [prevSubj, subject, content, collection]);
 
   const handleCheckboxChange = (optionId: any) => {
     const newCheckboxIdMap = {
@@ -30,15 +36,7 @@ export function PanelContentValues({ subject, content, onSelect }: Props) {
     };
     setCheckboxIdMap(newCheckboxIdMap);
 
-    const selectedValues: string[] = Object.keys(
-      pickBy(newCheckboxIdMap, (v, k) => v === true)
-    ).map(
-      (k) =>
-        get(
-          options.find((i) => i.id === k),
-          'label'
-        ) as string
-    );
+    const selectedValues: string[] = Object.keys(pickBy(newCheckboxIdMap, (v, k) => v === true));
 
     onSelect(subject, selectedValues);
   };
