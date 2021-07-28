@@ -11,6 +11,7 @@ import {
 import { PanelContentSubjects } from './panel_content_subjects';
 import { PanelContentValues } from './panel_content_values';
 import { fetchData } from '../fetch_data';
+import { PanelContentSummary } from './panel_content_summary';
 
 interface Props {
   name: string;
@@ -72,10 +73,13 @@ export function ComboFilterPanel(props: Props) {
       <EuiFlexGroup className="comboFilter__panel-body" gutterSize="none" ref={props.refCallback}>
         <EuiFlexItem className="comboFilter__content">
           <EuiFieldSearch compressed value={query} onChange={handleSearch} />
-          <PanelContentSubjects
+          <PanelContentSummary
             name={props.name}
+            count={filterCount}
+            onSelect={() => handleSubjectSelect('total')}
+          />
+          <PanelContentSubjects
             subjects={Object.keys(mockContent)}
-            filterCount={filterCount}
             onSelect={handleSubjectSelect}
           />
         </EuiFlexItem>

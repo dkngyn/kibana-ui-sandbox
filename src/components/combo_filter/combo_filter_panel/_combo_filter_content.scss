@@ -5,15 +5,14 @@
     border-left: $euiBorderThin;
   }
 }
+.comboFilter__summary {
+  margin-top: $euiSizeS;
+}
 
 .comboFilter__subjects {
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  margin-top: $euiSizeS;
-
-  .comboFilter__subjects-total {
-  }
 
   .comboFilter__subjects-list {
     @include euiYScrollWithShadows;
@@ -21,7 +20,10 @@
     overflow-y: auto;
     mask-image: none;
   }
+}
 
+.comboFilter__summary,
+.comboFilter__subjects {
   .euiContextMenuItem {
     padding: $euiSizeXS;
     font-size: $euiFontSizeS;
@@ -33,9 +35,6 @@
 
     .euiListGroupItem {
       margin-top: $euiSizeXS;
-      //&:first-child {
-      //  margin-top: 0;
-      //}
     }
 
     .euiListGroupItem__button {
