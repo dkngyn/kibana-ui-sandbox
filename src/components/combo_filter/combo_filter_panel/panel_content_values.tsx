@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
 import { EuiCheckboxGroup } from '@elastic/eui';
-import { get, pickBy, isEmpty } from 'lodash';
+import { pickBy, isEmpty } from 'lodash';
 
 interface Props {
   subject: string;
@@ -42,7 +42,7 @@ export function PanelContentValues({ subject, content, collection, onSelect }: P
   };
 
   return (
-    <div className="comboFilter__values">
+    <div className="comboFilter__values-wrap">
       <p className="comboFilter__values-title">{subject}</p>
       <EuiCheckboxGroup
         className="comboFilter__values-list"

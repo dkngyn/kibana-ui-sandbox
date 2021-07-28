@@ -19,6 +19,8 @@ interface Props {
   onSubmit: (filters: Record<string, string[]>) => void;
 }
 
+const VIEW_SUMMARY = 'react_view_summary';
+
 export function ComboFilterPanel(props: Props) {
   const [mockContent, setMockContent] = useState<Record<string, string[]>>({});
   const [query, setQuery] = useState<string>('');
@@ -30,8 +32,7 @@ export function ComboFilterPanel(props: Props) {
     fetchData(query)
       .then((resp) => {
         setMockContent(resp);
-        const s = Object.keys(resp)[0];
-        setSubject(s);
+        setSubject(Object.keys(resp)[0]);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -64,6 +65,10 @@ export function ComboFilterPanel(props: Props) {
     setQuery(e.target.value);
   };
 
+  const handleSummarySelect = () => {
+    setSubject(VIEW_SUMMARY);
+  };
+
   const handleClick = () => {
     props.onSubmit(collection);
   };
@@ -76,7 +81,7 @@ export function ComboFilterPanel(props: Props) {
           <PanelContentSummary
             name={props.name}
             count={filterCount}
-            onSelect={() => handleSubjectSelect('total')}
+            onSelect={handleSummarySelect}
           />
           <PanelContentSubjects
             subjects={Object.keys(mockContent)}
@@ -84,12 +89,14 @@ export function ComboFilterPanel(props: Props) {
           />
         </EuiFlexItem>
         <EuiFlexItem className="comboFilter__content">
-          <PanelContentValues
-            subject={subject}
-            content={mockContent}
-            collection={collection}
-            onSelect={handleValueSelect}
-          />
+          <div className="comboFilter__values">
+            <PanelContentValues
+              subject={subject}
+              content={mockContent}
+              collection={collection}
+              onSelect={handleValueSelect}
+            />
+          </div>
         </EuiFlexItem>
       </EuiFlexGroup>
       <div className="comboFilter__panel-footer">
