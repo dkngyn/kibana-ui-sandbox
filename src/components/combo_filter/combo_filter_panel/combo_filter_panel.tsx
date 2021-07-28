@@ -8,9 +8,11 @@ import {
   // @ts-ignore
   EuiFieldSearch,
 } from '@elastic/eui';
+import { fetchData } from '../fetch_data';
+import { buildCheckboxOptions } from '../build_checkbox_options';
+import { CheckboxCollection } from '../types';
 import { PanelContentSubjects } from './panel_content_subjects';
 import { PanelContentValues } from './panel_content_values';
-import { fetchData } from '../fetch_data';
 import { PanelContentSummary } from './panel_content_summary';
 
 interface Props {
@@ -22,17 +24,17 @@ interface Props {
 const VIEW_SUMMARY = 'react_view_summary';
 
 export function ComboFilterPanel(props: Props) {
-  const [mockContent, setMockContent] = useState<Record<string, string[]>>({});
   const [query, setQuery] = useState<string>('');
   const [subject, setSubject] = useState<string>('');
-  const [collection, setCollection] = useState<Record<string, string[]>>({});
   const [filterCount, setFilterCount] = useState<number>(0);
+  const [filterCollection, setFilterCollection] = useState<Record<string, string[]>>({});
+  const [checkboxCollection, setCheckboxCollection] = useState<CheckboxCollection>({});
 
   useEffect(() => {
     fetchData(query)
       .then((resp) => {
-        setMockContent(resp);
         setSubject(Object.keys(resp)[0]);
+        setCheckboxCollection(buildCheckboxOptions(resp));
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -41,12 +43,12 @@ export function ComboFilterPanel(props: Props) {
   }, [query]);
 
   useEffect(() => {
-    const count = Object.values(collection).reduce((acc: number, cur: string[]) => {
+    const count = Object.values(filterCollection).reduce((acc: number, cur: string[]) => {
       acc += cur.length;
       return acc;
     }, 0);
     setFilterCount(count);
-  }, [collection]);
+  }, [filterCollection]);
 
   const handleSubjectSelect = (subj: string) => {
     setSubject(subj);
@@ -54,10 +56,10 @@ export function ComboFilterPanel(props: Props) {
 
   const handleValueSelect = (subj: string, selectedValues: string[]) => {
     const newFilters = {
-      ...collection,
+      ...filterCollection,
       ...{ [subj]: selectedValues },
     };
-    setCollection(newFilters);
+    setFilterCollection(newFilters);
   };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +72,7 @@ export function ComboFilterPanel(props: Props) {
   };
 
   const handleClick = () => {
-    props.onSubmit(collection);
+    props.onSubmit(filterCollection);
   };
 
   return (
@@ -84,7 +86,7 @@ export function ComboFilterPanel(props: Props) {
             onSelect={handleSummarySelect}
           />
           <PanelContentSubjects
-            subjects={Object.keys(mockContent)}
+            subjects={Object.keys(checkboxCollection)}
             onSelect={handleSubjectSelect}
           />
         </EuiFlexItem>
@@ -92,8 +94,8 @@ export function ComboFilterPanel(props: Props) {
           <div className="comboFilter__values">
             <PanelContentValues
               subject={subject}
-              content={mockContent}
-              collection={collection}
+              content={checkboxCollection}
+              collection={filterCollection}
               onSelect={handleValueSelect}
             />
           </div>

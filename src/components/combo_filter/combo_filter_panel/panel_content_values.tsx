@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
 import { EuiCheckboxGroup } from '@elastic/eui';
 import { pickBy, isEmpty } from 'lodash';
+import { CheckboxCollection } from '../types';
 
 interface Props {
   subject: string;
-  content: Record<string, string[]>;
+  content: CheckboxCollection;
   collection: Record<string, string[]>;
   onSelect: (s: string, vs: string[]) => void;
 }
@@ -19,7 +20,7 @@ export function PanelContentValues({ subject, content, collection, onSelect }: P
     if (prevSubj !== subject) setCheckboxIdMap({});
 
     if (!isEmpty(subject)) {
-      setOptions(content[subject].map((s) => ({ id: s, label: s })));
+      setOptions(content[subject]);
 
       if (!isEmpty(collection[subject])) {
         const newCheckboxIdMap: Record<string, boolean> = {};
