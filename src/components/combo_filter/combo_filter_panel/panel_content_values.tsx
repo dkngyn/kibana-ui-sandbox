@@ -1,18 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
 import { EuiCheckboxGroup } from '@elastic/eui';
-import { pickBy, isEmpty } from 'lodash';
-import { CheckboxCollection } from '../types';
+import { isEmpty } from 'lodash';
+import { CheckboxCollection, CheckboxIdMap } from '../types';
 
 interface Props {
   subject: string;
-  content: CheckboxCollection;
-  collection: Record<string, string[]>;
-  onSelect: (s: string, vs: string[]) => void;
+  optionMap: CheckboxCollection;
+  filterMap: Record<string, CheckboxIdMap>;
+  onSelect: (s: string, m: CheckboxIdMap) => void;
 }
 
-export function PanelContentValues({ subject, content, collection, onSelect }: Props) {
-  const [checkboxIdMap, setCheckboxIdMap] = useState<Record<string, boolean>>({});
+export function PanelContentValues({ subject, optionMap, filterMap, onSelect }: Props) {
+  const [checkboxIdMap, setCheckboxIdMap] = useState<CheckboxIdMap>({});
   const [options, setOptions] = useState<Array<Record<string, string>>>([]);
   const prevSubj = usePrevious(subject);
 
@@ -20,15 +20,13 @@ export function PanelContentValues({ subject, content, collection, onSelect }: P
     if (prevSubj !== subject) setCheckboxIdMap({});
 
     if (!isEmpty(subject)) {
-      setOptions(content[subject]);
+      setOptions(optionMap[subject]);
 
-      if (!isEmpty(collection[subject])) {
-        const newCheckboxIdMap: Record<string, boolean> = {};
-        collection[subject].forEach((s) => (newCheckboxIdMap[s] = true));
-        setCheckboxIdMap(newCheckboxIdMap);
+      if (!isEmpty(filterMap[subject])) {
+        setCheckboxIdMap(filterMap[subject]);
       }
     }
-  }, [prevSubj, subject, content, collection]);
+  }, [prevSubj, subject, optionMap, filterMap]);
 
   const handleCheckboxChange = (optionId: any) => {
     const newCheckboxIdMap = {
@@ -37,13 +35,11 @@ export function PanelContentValues({ subject, content, collection, onSelect }: P
     };
     setCheckboxIdMap(newCheckboxIdMap);
 
-    const selectedValues: string[] = Object.keys(pickBy(newCheckboxIdMap, (v, k) => v === true));
-
-    onSelect(subject, selectedValues);
+    onSelect(subject, newCheckboxIdMap);
   };
 
   return (
-    <div className="comboFilter__values-wrap">
+    <>
       <p className="comboFilter__values-title">{subject}</p>
       <EuiCheckboxGroup
         className="comboFilter__values-list"
@@ -51,7 +47,7 @@ export function PanelContentValues({ subject, content, collection, onSelect }: P
         idToSelectedMap={checkboxIdMap}
         onChange={handleCheckboxChange}
       />
-    </div>
+    </>
   );
 }
 

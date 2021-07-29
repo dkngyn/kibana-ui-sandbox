@@ -9,11 +9,12 @@ import {
   EuiFieldSearch,
 } from '@elastic/eui';
 import { fetchData } from '../fetch_data';
-import { buildCheckboxOptions } from '../build_checkbox_options';
-import { CheckboxCollection } from '../types';
+import { CheckboxCollection, CheckboxIdMap } from '../types';
+import { buildCheckboxOptions, reduceToSelectedCheckboxOptions } from '../utils';
 import { PanelContentSubjects } from './panel_content_subjects';
 import { PanelContentValues } from './panel_content_values';
 import { PanelContentSummary } from './panel_content_summary';
+import { PanelContentSelectedValues } from './panel_content_selected_values';
 
 interface Props {
   name: string;
@@ -27,7 +28,7 @@ export function ComboFilterPanel(props: Props) {
   const [query, setQuery] = useState<string>('');
   const [subject, setSubject] = useState<string>('');
   const [filterCount, setFilterCount] = useState<number>(0);
-  const [filterCollection, setFilterCollection] = useState<Record<string, string[]>>({});
+  const [filterCollection, setFilterCollection] = useState<Record<string, CheckboxIdMap>>({});
   const [checkboxCollection, setCheckboxCollection] = useState<CheckboxCollection>({});
 
   useEffect(() => {
@@ -43,8 +44,8 @@ export function ComboFilterPanel(props: Props) {
   }, [query]);
 
   useEffect(() => {
-    const count = Object.values(filterCollection).reduce((acc: number, cur: string[]) => {
-      acc += cur.length;
+    const count = Object.values(filterCollection).reduce((acc: number, map) => {
+      acc += Object.keys(reduceToSelectedCheckboxOptions(map)).length;
       return acc;
     }, 0);
     setFilterCount(count);
@@ -54,10 +55,10 @@ export function ComboFilterPanel(props: Props) {
     setSubject(subj);
   };
 
-  const handleValueSelect = (subj: string, selectedValues: string[]) => {
+  const handleValueSelect = (subj: string, checkboxIdMap: CheckboxIdMap) => {
     const newFilters = {
       ...filterCollection,
-      ...{ [subj]: selectedValues },
+      ...{ [subj]: checkboxIdMap },
     };
     setFilterCollection(newFilters);
   };
@@ -72,8 +73,24 @@ export function ComboFilterPanel(props: Props) {
   };
 
   const handleClick = () => {
-    props.onSubmit(filterCollection);
+    // props.onSubmit(filterCollection);
   };
+
+  const panelContentValues =
+    subject === VIEW_SUMMARY ? (
+      <PanelContentSelectedValues
+        count={filterCount}
+        filterMap={filterCollection}
+        onSelect={handleValueSelect}
+      />
+    ) : (
+      <PanelContentValues
+        subject={subject}
+        optionMap={checkboxCollection}
+        filterMap={filterCollection}
+        onSelect={handleValueSelect}
+      />
+    );
 
   return (
     <EuiPanel className="comboFilter__panel" paddingSize="none">
@@ -92,12 +109,7 @@ export function ComboFilterPanel(props: Props) {
         </EuiFlexItem>
         <EuiFlexItem className="comboFilter__content">
           <div className="comboFilter__values">
-            <PanelContentValues
-              subject={subject}
-              content={checkboxCollection}
-              collection={filterCollection}
-              onSelect={handleValueSelect}
-            />
+            <div className="comboFilter__values-wrap">{panelContentValues}</div>
           </div>
         </EuiFlexItem>
       </EuiFlexGroup>

@@ -63,4 +63,11 @@
     letter-spacing: 1.5px;
     text-transform: uppercase;
   }
+
+  .comboFilter__values-list {
+    margin-bottom: $euiSize;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
