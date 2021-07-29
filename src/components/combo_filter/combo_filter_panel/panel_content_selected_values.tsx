@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { EuiText } from '@elastic/eui';
-import { size } from 'lodash';
 import { CheckboxCollection, CheckboxIdMap } from '../types';
 import { PanelContentValues } from './panel_content_values';
 import { transformToCheckboxCollection } from '../utils';

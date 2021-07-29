@@ -13,8 +13,8 @@ export function buildCheckboxOptions(collection: Record<string, string[]>): Chec
 export function transformToCheckboxCollection(
   collection: Record<string, CheckboxIdMap>
 ): CheckboxCollection {
-  return Object.keys(collection).reduce((acc, subject) => {
-    const map = buildCheckboxOptions({ [subject]: Object.keys(collection[subject]) });
+  return Object.keys(collection).reduce((acc, s) => {
+    const map = buildCheckboxOptions({ [s]: Object.keys(collection[s]) });
     Object.assign(acc, map);
     return acc;
   }, {} as CheckboxCollection);

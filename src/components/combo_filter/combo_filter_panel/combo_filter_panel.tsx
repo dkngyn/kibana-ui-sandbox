@@ -73,7 +73,15 @@ export function ComboFilterPanel(props: Props) {
   };
 
   const handleClick = () => {
-    // props.onSubmit(filterCollection);
+    if (filterCount === 0) props.onSubmit({});
+
+    const filters = Object.keys(filterCollection).reduce((acc, s) => {
+      const reducedMap = reduceToSelectedCheckboxOptions(filterCollection[s]);
+      acc[s] = Object.keys(reducedMap);
+      return acc;
+    }, {} as Record<string, string[]>);
+
+    props.onSubmit(filters);
   };
 
   const panelContentValues =
