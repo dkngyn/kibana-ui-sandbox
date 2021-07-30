@@ -1,4 +1,4 @@
-import React, { useEffect, useState, RefCallback, ChangeEvent } from 'react';
+import React, { useEffect, useState, RefCallback, ChangeEvent, MouseEvent } from 'react';
 import {
   EuiPanel,
   EuiFlexGroup,
@@ -18,8 +18,8 @@ import { PanelContentSelectedValues } from './panel_content_selected_values';
 
 interface Props {
   name: string;
-  refCallback: RefCallback<HTMLDivElement>;
   onSubmit: (filters: Record<string, string[]>) => void;
+  onClickOutside: (e: MouseEvent<HTMLElement>) => void;
 }
 
 const VIEW_SUMMARY = 'react_view_summary';
@@ -102,7 +102,7 @@ export function ComboFilterPanel(props: Props) {
 
   return (
     <EuiPanel className="comboFilter__panel" paddingSize="none">
-      <EuiFlexGroup className="comboFilter__panel-body" gutterSize="none" ref={props.refCallback}>
+      <EuiFlexGroup className="comboFilter__panel-body" gutterSize="none">
         <EuiFlexItem className="comboFilter__content">
           <EuiFieldSearch compressed value={query} onChange={handleSearch} />
           <PanelContentSummary

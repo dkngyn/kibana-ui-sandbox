@@ -1,8 +1,9 @@
-import React, { FocusEvent, useState } from 'react';
-import { EuiPortal } from '@elastic/eui';
+import React, { FocusEvent, MouseEvent, useState } from 'react';
+import { EuiFormControlLayout } from '@elastic/eui';
+import onClickOutside from 'react-onclickoutside';
 import { ComboFilterInput } from './combo_filter_input';
-import { ComboFilterPanel } from './combo_filter_panel';
 import { ComboFilterPortal } from './combo_filter_portal';
+import { PopperComponent } from './popper_component';
 
 interface Props {
   id?: string;
@@ -12,45 +13,26 @@ interface Props {
   isLoading?: boolean;
 }
 
+const outsideClickIgnoreClass = 'comboFilter--ignore-onClickOutside';
+const ComboFilterPanelPortal = onClickOutside(ComboFilterPortal);
+
 export function ComboFilter(props: Props) {
   const { compressed, name, fullWidth, isLoading } = props;
 
   const [isPanelOpen, setPanelOpen] = useState<boolean>(false);
   const [filterCount, setFilterCount] = useState<number>(0);
 
-  let refInstance: HTMLDivElement | null = null;
-  const refCallback = (r: HTMLDivElement) => {
-    if (refInstance) refInstance.removeEventListener('focusout', handleBlur);
-
-    refInstance = r;
-    if (refInstance) refInstance.addEventListener('focusout', handleBlur);
-  };
-
-  let panelRefInstance: HTMLDivElement | null = null;
-  const panelRefCallback = (r: HTMLDivElement) => {
-    panelRefInstance = r;
-  };
-
-  const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
+  const handleClickInside = (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault();
     setPanelOpen(true);
   };
 
-  const handleBlur = (event: unknown) => {
-    const focusEvent = event as FocusEvent & {
-      explicitOriginalTarget: EventTarget;
-    };
-
-    const relatedTarget = (focusEvent.relatedTarget ||
-      focusEvent.explicitOriginalTarget) as Node | null;
-
-    const focusedInInput = relatedTarget && refInstance && refInstance.contains(relatedTarget);
-
-    if (!focusedInInput) setPanelOpen(false);
+  const handleClickOutside = (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    setPanelOpen(false);
   };
 
   const handleSubmit = (filters: Record<string, string[]>) => {
-    // eslint-disable-next-line no-console
-    console.log(filters);
     const count = Object.values(filters).reduce((total, cur) => {
       total += cur.length;
       return total;
@@ -58,25 +40,28 @@ export function ComboFilter(props: Props) {
     setFilterCount(count);
   };
 
-  const panel = isPanelOpen ? (
-    <EuiPortal>
-      <ComboFilterPanel name={name} refCallback={panelRefCallback} onSubmit={handleSubmit} />
-    </EuiPortal>
-  ) : (
-    <></>
+  const input = (
+    <ComboFilterInput name={name} filterCount={filterCount} onClick={handleClickInside} />
+  );
+
+  const panel = (
+    <ComboFilterPanelPortal
+      name={name}
+      onSubmit={handleSubmit}
+      onClickOutside={handleClickOutside}
+      outsideClickIgnoreClass={outsideClickIgnoreClass}
+    />
   );
 
   return (
-    <div className="comboFilter" ref={refCallback}>
-      <ComboFilterInput
-        name={name}
-        filterCount={filterCount}
-        compressed={compressed}
-        fullWidth={fullWidth}
-        isLoading={isLoading}
-        onFocus={handleFocus}
-      />
-      <ComboFilterPortal name={name} refCallback={panelRefCallback} onSubmit={handleSubmit} />
+    <div className="comboFilter">
+      <EuiFormControlLayout compressed={compressed} fullWidth={fullWidth} isLoading={isLoading}>
+        <PopperComponent
+          hidePopper={!isPanelOpen}
+          popperComponent={panel}
+          targetComponent={input}
+        />
+      </EuiFormControlLayout>
     </div>
   );
 }

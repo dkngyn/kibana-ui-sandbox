@@ -1,21 +1,14 @@
-import React, { FocusEvent } from 'react';
-import { EuiButton, EuiFormControlLayout, EuiBadge, CommonProps } from '@elastic/eui';
+import React, { MouseEvent } from 'react';
+import { EuiButton, EuiBadge } from '@elastic/eui';
 
-interface Props extends CommonProps {
+interface Props {
   name: string;
   filterCount: number;
-  compressed?: boolean;
-  fullWidth?: boolean;
-  isLoading?: boolean;
-  onFocus: (e: FocusEvent<HTMLInputElement>) => void;
+  onClick: (e: MouseEvent<HTMLElement>) => void;
 }
 
 export function ComboFilterInput(props: Props) {
-  const { name, filterCount, isLoading, compressed, fullWidth } = props;
-
-  const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
-    props.onFocus(event);
-  };
+  const { name, filterCount, onClick } = props;
 
   const badge = <EuiBadge>{filterCount}</EuiBadge>;
   const label =
@@ -24,14 +17,18 @@ export function ComboFilterInput(props: Props) {
         {name} {badge}
       </>
     ) : (
-      <>name</>
+      <>{name}</>
     );
 
   return (
-    <EuiFormControlLayout compressed={compressed} fullWidth={fullWidth} isLoading={isLoading}>
-      <EuiButton color="text" iconSide="right" iconType="arrowDown">
-        {label}
-      </EuiButton>
-    </EuiFormControlLayout>
+    <EuiButton
+      className="comboFilter__input"
+      color="text"
+      iconSide="right"
+      iconType="arrowDown"
+      onClick={onClick}
+    >
+      {label}
+    </EuiButton>
   );
 }
