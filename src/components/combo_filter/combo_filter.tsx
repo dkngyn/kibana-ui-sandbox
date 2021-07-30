@@ -13,9 +13,10 @@ interface Props {
 }
 
 export function ComboFilter(props: Props) {
-  const { compressed, id, name, fullWidth, isLoading } = props;
+  const { compressed, name, fullWidth, isLoading } = props;
 
   const [isPanelOpen, setPanelOpen] = useState<boolean>(false);
+  const [filterCount, setFilterCount] = useState<number>(0);
 
   let refInstance: HTMLDivElement | null = null;
   const refCallback = (r: HTMLDivElement) => {
@@ -50,6 +51,11 @@ export function ComboFilter(props: Props) {
   const handleSubmit = (filters: Record<string, string[]>) => {
     // eslint-disable-next-line no-console
     console.log(filters);
+    const count = Object.values(filters).reduce((total, cur) => {
+      total += cur.length;
+      return total;
+    }, 0);
+    setFilterCount(count);
   };
 
   const panel = isPanelOpen ? (
@@ -64,6 +70,7 @@ export function ComboFilter(props: Props) {
     <div className="comboFilter" ref={refCallback}>
       <ComboFilterInput
         name={name}
+        filterCount={filterCount}
         compressed={compressed}
         fullWidth={fullWidth}
         isLoading={isLoading}
