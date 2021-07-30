@@ -10,11 +10,10 @@ interface Props {
   compressed?: boolean;
   fullWidth?: boolean;
   isLoading?: boolean;
-  placeholder?: string;
 }
 
 export function ComboFilter(props: Props) {
-  const { compressed, id, name, placeholder, fullWidth, isLoading } = props;
+  const { compressed, id, name, fullWidth, isLoading } = props;
 
   const [isPanelOpen, setPanelOpen] = useState<boolean>(false);
 
@@ -64,11 +63,10 @@ export function ComboFilter(props: Props) {
   return (
     <div className="comboFilter" ref={refCallback}>
       <ComboFilterInput
-        id={id}
+        name={name}
         compressed={compressed}
         fullWidth={fullWidth}
         isLoading={isLoading}
-        placeholder={placeholder}
         onFocus={handleFocus}
       />
       <ComboFilterPortal name={name} refCallback={panelRefCallback} onSubmit={handleSubmit} />
